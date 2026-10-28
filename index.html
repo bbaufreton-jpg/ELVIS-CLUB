@@ -177,19 +177,104 @@
     <!-- 2D Interactive Canvas -->
     <canvas id="club-canvas" class="w-full h-full block cursor-pointer"></canvas>
 
-    <!-- Overlay Démarrage Audio -->
-    <div id="audio-start-overlay" class="absolute inset-0 z-40 bg-slate-950/75 backdrop-blur-sm flex flex-col items-center justify-center p-4">
-      <div class="max-w-md w-full bg-slate-900 border border-pink-500/40 p-6 rounded-3xl text-center shadow-2xl space-y-4">
-        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-pink-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-pink-500/30">
-          <i data-lucide="volume-2" class="w-8 h-8 text-white animate-bounce"></i>
+    <!-- Collaborative Entrance & Persistent Account Selector -->
+    <div id="entrance-modal" class="absolute inset-0 z-40 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 overflow-y-auto">
+      <div class="max-w-xl w-full bg-slate-900 border border-pink-500/40 p-5 sm:p-6 rounded-3xl shadow-2xl my-auto space-y-4 relative">
+        <div class="text-center space-y-1">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-pink-500/30">
+            <i data-lucide="disc-3" class="w-6 h-6 text-white animate-spin-slow"></i>
+          </div>
+          <h2 class="font-display font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-cyan-400">
+            ELVIS CLUB • ESPACE COLLABORATIF
+          </h2>
+          <p class="text-xs text-slate-400">Chaque collègue a son propre compte sauvegardé automatiquement</p>
         </div>
-        <div>
-          <h2 class="font-display font-black text-xl text-white">BIENVENUE À L'ELVIS CLUB</h2>
-          <p class="text-xs text-slate-400 mt-1">Cliquez ci-dessous pour activer le système son du club et rejoindre la piste de danse.</p>
+
+        <!-- Quick Resume Box (if recognized on this workstation) -->
+        <div id="quick-resume-box" class="hidden p-3 rounded-2xl bg-gradient-to-r from-pink-950/40 via-purple-950/30 to-slate-900 border border-pink-500/40 flex items-center justify-between">
+          <div class="flex items-center space-x-3 min-w-0 pr-2">
+            <div id="quick-resume-avatar-badge" class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm border-2 border-pink-400 shadow shrink-0">
+              U
+            </div>
+            <div class="truncate">
+              <span class="text-[10px] text-pink-400 uppercase font-bold tracking-wider">Bon retour parmi nous !</span>
+              <p class="text-xs font-bold text-white truncate" id="quick-resume-name">Mon Compte</p>
+              <p class="text-[10px] text-slate-400 truncate" id="quick-resume-email">email@elvis.club</p>
+            </div>
+          </div>
+          <button id="btn-quick-resume" class="px-3 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs shrink-0 flex items-center space-x-1.5 shadow-lg shadow-pink-600/30 transition">
+            <i data-lucide="play" class="w-3.5 h-3.5"></i>
+            <span>Entrer</span>
+          </button>
         </div>
-        <button id="btn-start-sound" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:to-cyan-400 text-white font-display font-bold text-sm tracking-wider shadow-lg shadow-pink-600/30 transition transform hover:scale-[1.02]">
-          🔊 DÉMARRER LE SON DU CLUB
-        </button>
+
+        <!-- Navigation Tabs: Profils Existants vs Nouveau Collaborateur -->
+        <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+          <button id="tab-choose-profile" class="py-2 rounded-xl bg-pink-600 text-white border border-pink-500 shadow">
+            👥 Comptes de l'Équipe
+          </button>
+          <button id="tab-create-profile" class="py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700">
+            ➕ Nouveau Profil
+          </button>
+        </div>
+
+        <!-- PANEL 1: Directory of existing saved profiles -->
+        <div id="panel-choose-profile" class="space-y-2">
+          <div class="flex items-center justify-between text-[11px] text-slate-400 px-1">
+            <span>Clique sur ton compte pour rejoindre la piste :</span>
+            <span id="saved-profiles-count" class="text-cyan-400 font-mono font-bold">0 profil(s)</span>
+          </div>
+          <div id="existing-profiles-list" class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+            <div class="p-6 text-center text-xs text-slate-500">
+              <i data-lucide="loader" class="w-4 h-4 animate-spin inline-block mr-1"></i> Chargement des comptes enregistrés...
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: Form for creating a new collaborator profile -->
+        <div id="panel-create-profile" class="hidden space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1">Adresse Mail Pro</label>
+              <input type="email" id="entrance-input-email" placeholder="ton.mail@entreprise.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-pink-500">
+            </div>
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1">Surnom en Boîte</label>
+              <input type="text" id="entrance-input-name" maxlength="15" placeholder="Ex: Alex, Sam, Camille..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-cyan-500">
+            </div>
+          </div>
+
+          <!-- Quick Avatar Preview & Options -->
+          <div class="bg-slate-950/70 p-3 rounded-2xl border border-slate-800 space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-slate-300">Look de l'avatar</span>
+              <span class="text-[10px] text-emerald-400 font-semibold">Sauvegarde Cloud permanente</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="w-16 h-20 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center shrink-0">
+                <canvas id="entrance-avatar-preview" width="60" height="74" class="rounded-lg"></canvas>
+              </div>
+              <div class="flex-1 space-y-2 min-w-0">
+                <div>
+                  <span class="text-[10px] text-slate-400 block mb-0.5">Teint</span>
+                  <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5" id="entrance-skin-container"></div>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block mb-0.5">Tenue</span>
+                  <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5" id="entrance-outfit-container"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button id="btn-submit-new-profile" class="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:to-cyan-400 text-white font-display font-bold text-xs tracking-wider shadow-lg shadow-pink-600/30 transition">
+            ✨ CRÉER MON COMPTE & REJOINDRE LE CLUB
+          </button>
+        </div>
+
+        <p class="text-[10px] text-center text-slate-500 pt-1">
+          🔊 Le son et les basses du club s'activent directement à l'entrée.
+        </p>
       </div>
     </div>
 
@@ -691,11 +776,15 @@
         </div>
       </div>
 
-      <!-- Bouton de validation -->
-      <div class="flex space-x-3 pt-3 border-t border-slate-800 shrink-0">
+      <!-- Boutons de validation et changement de profil -->
+      <div class="flex items-center space-x-2 pt-3 border-t border-slate-800 shrink-0">
+        <button id="btn-switch-account" type="button" class="px-3.5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-xs border border-slate-700 transition flex items-center justify-center space-x-1.5">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          <span>Changer de compte</span>
+        </button>
         <button id="btn-save-account" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:to-cyan-400 text-white font-bold text-sm shadow-lg shadow-pink-600/30 transition flex items-center justify-center space-x-2">
           <i data-lucide="check" class="w-4 h-4"></i>
-          <span>Enregistrer mon Profil</span>
+          <span>Enregistrer les modifications</span>
         </button>
       </div>
     </div>
@@ -761,6 +850,9 @@
         speech: null,
         speechTimer: 0
       },
+      savedProfiles: [],
+      activeProfileId: null,
+      isAccountSelected: false,
       residentDj: {
         name: 'DJ Résident',
         service: 'deezer',
@@ -861,6 +953,28 @@
 
     const audioDeckA = document.getElementById('audio-deck-a');
     const audioDeckB = document.getElementById('audio-deck-b');
+    const canvas = document.getElementById('club-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let width = 0;
+    let height = 0;
+
+    function resizeCanvas() {
+      if (!canvas || !canvas.parentElement) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      width = rect.width || window.innerWidth;
+      height = rect.height || (window.innerHeight - 64);
+      canvas.width = width;
+      canvas.height = height;
+
+      if (state.user.x === 0 && state.user.y === 0) {
+        state.user.x = width / 2;
+        state.user.y = Math.min(height - 60, Math.max(200, height * 0.65));
+        state.user.targetX = state.user.x;
+        state.user.targetY = state.user.y;
+      }
+    }
+    window.addEventListener('resize', resizeCanvas);
+
     let audioCtx = null;
     let synthTimer = null;
     let emergencySynthRunning = false;
@@ -1301,8 +1415,8 @@
       }
       state.audioMuted = false;
 
-      const overlay = document.getElementById('audio-start-overlay');
-      if (overlay) overlay.style.display = 'none';
+      const overlay = document.getElementById('entrance-modal');
+      if (overlay) overlay.classList.add('hidden');
 
       const btn = document.getElementById('btn-toggle-audio');
       const icon = document.getElementById('icon-volume');
@@ -1325,63 +1439,271 @@
       }
 
       lucide.createIcons();
-      showToast("🔊 Enceintes allumées ! Son du club actif.");
     }
-
-    document.getElementById('btn-start-sound')?.addEventListener('click', enableClubSound);
 
     function toggleAudio() {
-      initAudioContext();
-      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-
-      state.audioMuted = !state.audioMuted;
-      const btn = document.getElementById('btn-toggle-audio');
-      const icon = document.getElementById('icon-volume');
-
       if (state.audioMuted) {
-        audioDeckA.pause();
-        audioDeckB.pause();
-        stopEmergencySynth();
-        icon.setAttribute('data-lucide', 'volume-x');
-        btn.classList.replace('text-pink-400', 'text-slate-300');
-        const label = document.getElementById('audio-status-label');
-        if (label) {
-          label.innerHTML = `<i data-lucide="volume-x" class="w-3 h-3 mr-1"></i> Audio Muet (Cliquez)`;
-          label.className = "text-amber-400 flex items-center";
-        }
-      } else {
         enableClubSound();
+      } else {
+        state.audioMuted = true;
+        try {
+          audioDeckA.volume = 0;
+          audioDeckB.volume = 0;
+        } catch (e) {}
+        stopEmergencySynth();
+        const btn = document.getElementById('btn-toggle-audio');
+        const icon = document.getElementById('icon-volume');
+        if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        if (btn) btn.classList.remove('text-pink-400');
+        updateAudioHUDStatus("Audio Muet (Cliquez)", "amber");
+        lucide.createIcons();
       }
+    }
+
+    async function lookupAccountByEmail(email) {
+      if (!email) {
+        showToast("⚠️ Merci d'entrer une adresse email.");
+        return;
+      }
+      const target = email.toLowerCase().trim();
+      const found = state.savedProfiles.find(p => p.email && p.email.toLowerCase().trim() === target);
+      if (found) {
+        activateProfile(found);
+        showToast(`✓ Compte retrouvé : ${found.name} (${found.email})`);
+      } else {
+        showToast(`Aucun profil trouvé avec l'email "${email}".`);
+      }
+    }
+
+    // --- Persistance & Gestion Collaborative des Comptes ---
+    function activateProfile(profileData) {
+      if (!profileData) return;
+      state.user.id = profileData.id || profileData.docId || state.user.id;
+      state.user.name = profileData.name || 'Clubber';
+      state.user.email = profileData.email || `${state.user.name.toLowerCase()}@elvis.club`;
+      if (profileData.skinColor) state.user.skinColor = profileData.skinColor;
+      if (profileData.outfitColor) state.user.outfitColor = profileData.outfitColor;
+      if (profileData.hairStyle) state.user.hairStyle = profileData.hairStyle;
+      if (profileData.hairColor) state.user.hairColor = profileData.hairColor;
+      if (profileData.accessory) state.user.accessory = profileData.accessory;
+      state.activeProfileId = state.user.id;
+      state.isAccountSelected = true;
+
+      myUserId = state.user.id;
+      const uidBadge = document.getElementById('current-user-id');
+      const accountUidBadge = document.getElementById('account-full-uid');
+      if (uidBadge) uidBadge.innerText = myUserId;
+      if (accountUidBadge) accountUidBadge.innerText = myUserId;
+
+      updateCorporateUI();
+      setupAvatarCustomizer();
+
+      if (currentUser && db) {
+        try {
+          const sessionRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'session');
+          setDoc(sessionRef, {
+            activeProfileId: state.user.id,
+            lastLogin: Date.now()
+          }, { merge: true });
+        } catch(e) {
+          console.warn("Erreur sauvegarde session:", e);
+        }
+      }
+
+      const entranceModal = document.getElementById('entrance-modal');
+      if (entranceModal) entranceModal.classList.add('hidden');
+
+      enableClubSound();
+      broadcastPresence();
+      showToast(`👋 Bienvenue ${state.user.name} ! Ton profil est chargé.`);
+    }
+
+    async function createAndActivateNewProfile() {
+      const emailInput = document.getElementById('entrance-input-email');
+      const nameInput = document.getElementById('entrance-input-name');
+      const email = emailInput?.value.trim() || '';
+      const name = nameInput?.value.trim() || '';
+
+      if (!name) {
+        showToast("⚠️ Renseigne ton prénom ou surnom en boîte !");
+        return;
+      }
+
+      const cleanEmail = email ? email.toLowerCase().replace(/[^a-z0-9]/g, '_') : '';
+      const profileId = cleanEmail ? `user_${cleanEmail}` : `user_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
+
+      const newProfile = {
+        id: profileId,
+        name: name,
+        email: email || `${name.toLowerCase()}@elvis.club`,
+        skinColor: state.user.skinColor,
+        outfitColor: state.user.outfitColor,
+        hairStyle: state.user.hairStyle,
+        hairColor: state.user.hairColor,
+        accessory: state.user.accessory,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      };
+
+      if (currentUser && db) {
+        try {
+          const profRef = doc(db, 'artifacts', appId, 'public', 'data', 'profiles', profileId);
+          await setDoc(profRef, newProfile);
+
+          const privRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'user_data');
+          await setDoc(privRef, newProfile);
+        } catch(err) {
+          console.warn("Erreur création profil Cloud:", err);
+        }
+      }
+
+      activateProfile(newProfile);
+    }
+
+    function renderEntranceProfilesList() {
+      const container = document.getElementById('existing-profiles-list');
+      const countEl = document.getElementById('saved-profiles-count');
+      if (!container) return;
+
+      if (!state.savedProfiles || state.savedProfiles.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center rounded-2xl bg-slate-950/40 border border-dashed border-slate-800">
+            <i data-lucide="user-plus" class="w-7 h-7 mx-auto text-pink-400 mb-1.5"></i>
+            <p class="text-xs font-semibold text-slate-300">Aucun profil enregistré pour le moment.</p>
+            <p class="text-[11px] text-slate-500 mt-1">Crée le premier profil de l'équipe dans l'onglet ci-dessus !</p>
+          </div>
+        `;
+        if (countEl) countEl.innerText = "0 profil";
+        lucide.createIcons();
+        return;
+      }
+
+      if (countEl) countEl.innerText = `${state.savedProfiles.length} profil(s)`;
+      container.innerHTML = '';
+
+      state.savedProfiles.forEach(prof => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-2.5 rounded-2xl bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-pink-500/40 transition group cursor-pointer';
+        item.innerHTML = `
+          <div class="flex items-center space-x-3 min-w-0 pr-2">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white shadow border border-white/20 shrink-0" style="background-color: ${prof.outfitColor || '#ec4899'}">
+              ${(prof.name || 'U').charAt(0).toUpperCase()}
+            </div>
+            <div class="truncate">
+              <p class="text-xs font-bold text-white group-hover:text-pink-400 transition truncate">${prof.name}</p>
+              <p class="text-[10px] text-slate-400 truncate font-mono">${prof.email || 'Sans email'}</p>
+            </div>
+          </div>
+          <button class="px-3 py-1.5 rounded-xl bg-pink-600/20 group-hover:bg-pink-600 text-pink-400 group-hover:text-white font-bold text-xs shrink-0 transition flex items-center space-x-1">
+            <span>Entrer</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        `;
+
+        item.addEventListener('click', () => {
+          activateProfile(prof);
+        });
+
+        container.appendChild(item);
+      });
       lucide.createIcons();
     }
-    document.getElementById('btn-toggle-audio')?.addEventListener('click', toggleAudio);
 
-    // --- Canvas & Layout ---
-    const canvas = document.getElementById('club-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = 0;
-    let height = 0;
+    function renderEntranceAvatarMini() {
+      const pCanvas = document.getElementById('entrance-avatar-preview');
+      if (!pCanvas) return;
+      const pCtx = pCanvas.getContext('2d');
+      pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
 
-    function resizeCanvas() {
-      const parent = canvas.parentElement;
-      width = canvas.width = parent.clientWidth;
-      height = canvas.height = parent.clientHeight;
-      if (state.user.x === 0 && state.user.y === 0) {
-        state.user.x = width * 0.5;
-        state.user.y = height * 0.7;
-        state.user.targetX = state.user.x;
-        state.user.targetY = state.user.y;
-      }
+      pCtx.save();
+      pCtx.translate(30, 46);
+
+      pCtx.fillStyle = 'rgba(0,0,0,0.3)';
+      pCtx.beginPath();
+      pCtx.ellipse(0, 16, 12, 3, 0, 0, Math.PI * 2);
+      pCtx.fill();
+
+      pCtx.fillStyle = state.user.outfitColor || '#ec4899';
+      pCtx.fillRect(-7, -2, 14, 13);
+
+      pCtx.fillStyle = state.user.skinColor || '#fed7aa';
+      pCtx.beginPath();
+      pCtx.arc(0, -9, 8, 0, Math.PI * 2);
+      pCtx.fill();
+
+      pCtx.fillStyle = state.user.hairColor || '#38bdf8';
+      pCtx.fillRect(-7, -17, 14, 6);
+
+      pCtx.restore();
     }
-    window.addEventListener('resize', resizeCanvas);
+
+    function setupEntranceControls() {
+      const tabChoose = document.getElementById('tab-choose-profile');
+      const tabCreate = document.getElementById('tab-create-profile');
+      const panelChoose = document.getElementById('panel-choose-profile');
+      const panelCreate = document.getElementById('panel-create-profile');
+
+      tabChoose?.addEventListener('click', () => {
+        tabChoose.className = 'py-2 rounded-xl bg-pink-600 text-white border border-pink-500 shadow';
+        tabCreate.className = 'py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        panelChoose.classList.remove('hidden');
+        panelCreate.classList.add('hidden');
+      });
+
+      tabCreate?.addEventListener('click', () => {
+        tabCreate.className = 'py-2 rounded-xl bg-pink-600 text-white border border-pink-500 shadow';
+        tabChoose.className = 'py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        panelCreate.classList.remove('hidden');
+        panelChoose.classList.add('hidden');
+        renderEntranceAvatarMini();
+      });
+
+      document.getElementById('btn-submit-new-profile')?.addEventListener('click', createAndActivateNewProfile);
+
+      const skinCont = document.getElementById('entrance-skin-container');
+      if (skinCont) {
+        skinCont.innerHTML = '';
+        PALETTES.skins.forEach(c => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `w-5 h-5 rounded-full border shrink-0 ${state.user.skinColor === c ? 'border-white scale-110 shadow' : 'border-transparent'}`;
+          btn.style.backgroundColor = c;
+          btn.addEventListener('click', () => {
+            state.user.skinColor = c;
+            setupAvatarCustomizer();
+            setupEntranceControls();
+          });
+          skinCont.appendChild(btn);
+        });
+      }
+
+      const outfitCont = document.getElementById('entrance-outfit-container');
+      if (outfitCont) {
+        outfitCont.innerHTML = '';
+        PALETTES.outfits.forEach(c => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `w-5 h-5 rounded-full border shrink-0 ${state.user.outfitColor === c ? 'border-white scale-110 shadow' : 'border-transparent'}`;
+          btn.style.backgroundColor = c;
+          btn.addEventListener('click', () => {
+            state.user.outfitColor = c;
+            setupAvatarCustomizer();
+            setupEntranceControls();
+          });
+          outfitCont.appendChild(btn);
+        });
+      }
+
+      renderEntranceAvatarMini();
+    }
 
     // --- Presence Cloud Firebase ---
     async function broadcastPresence() {
-      if (!currentUser || !db) return;
+      if (!currentUser || !db || !state.isAccountSelected) return;
       try {
-        const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'clubbers', myUserId);
+        const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'clubbers', state.user.id);
         await setDoc(userDocRef, {
-          id: myUserId,
+          id: state.user.id,
           name: state.user.name,
           email: state.user.email,
           skinColor: state.user.skinColor,
@@ -1407,7 +1729,7 @@
       if (!currentUser || !db) return false;
       try {
         const profilePayload = {
-          userId: myUserId,
+          id: state.user.id,
           name: state.user.name,
           email: state.user.email,
           skinColor: state.user.skinColor,
@@ -1418,17 +1740,17 @@
           updatedAt: Date.now()
         };
 
-        const privateRef = doc(db, 'artifacts', appId, 'users', myUserId, 'profile', 'user_data');
-        await setDoc(privateRef, profilePayload);
+        const publicRef = doc(db, 'artifacts', appId, 'public', 'data', 'profiles', state.user.id);
+        await setDoc(publicRef, profilePayload, { merge: true });
 
-        const publicRef = doc(db, 'artifacts', appId, 'public', 'data', 'profiles', myUserId);
-        await setDoc(publicRef, profilePayload);
+        const privateRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'user_data');
+        await setDoc(privateRef, profilePayload, { merge: true });
 
         await broadcastPresence();
 
         const timeStr = new Date().toLocaleTimeString();
         const sub = document.getElementById('account-status-subtitle');
-        if (sub) sub.innerText = `Synchronisé à ${timeStr}`;
+        if (sub) sub.innerText = `Sauvegardé et synchronisé à ${timeStr}`;
         return true;
       } catch (err) {
         console.warn("Erreur sauvegarde Cloud:", err);
@@ -1436,56 +1758,8 @@
       }
     }
 
-    async function lookupAccountByEmail(searchEmail) {
-      if (!searchEmail || !searchEmail.includes('@')) {
-        showToast("⚠️ Renseigne une adresse email valide.");
-        return;
-      }
-      if (!currentUser || !db) {
-        showToast("ℹ️ Mode session locale actif.");
-        return;
-      }
-      showToast("🔍 Recherche de votre compte en cours...");
-      try {
-        const profilesCol = collection(db, 'artifacts', appId, 'public', 'data', 'profiles');
-        const snap = await getDocs(profilesCol);
-        let found = null;
-        const target = searchEmail.trim().toLowerCase();
-
-        snap.forEach(docSnap => {
-          const data = docSnap.data();
-          if (data && data.email && data.email.trim().toLowerCase() === target) {
-            found = data;
-          }
-        });
-
-        if (found) {
-          if (found.name) state.user.name = found.name;
-          if (found.email) state.user.email = found.email;
-          if (found.skinColor) state.user.skinColor = found.skinColor;
-          if (found.outfitColor) state.user.outfitColor = found.outfitColor;
-          if (found.hairStyle) state.user.hairStyle = found.hairStyle;
-          if (found.hairColor) state.user.hairColor = found.hairColor;
-          if (found.accessory) state.user.accessory = found.accessory;
-
-          updateCorporateUI();
-          setupAvatarCustomizer();
-          await saveUserProfileToCloud();
-          showToast(`✓ Compte retrouvé pour ${found.name} !`);
-        } else {
-          showToast(`ℹ️ Aucun compte existant pour cet email. Remplis tes infos et clique sur Enregistrer !`);
-        }
-      } catch (err) {
-        console.warn("Erreur lookup:", err);
-        showToast("Impossible de joindre le serveur pour le moment.");
-      }
-    }
-
     async function initNetworkPresence() {
-      const uidBadge = document.getElementById('current-user-id');
-      const accountUidBadge = document.getElementById('account-full-uid');
-      if (uidBadge) uidBadge.innerText = myUserId;
-      if (accountUidBadge) accountUidBadge.innerText = myUserId;
+      setupEntranceControls();
 
       if (typeof __firebase_config === 'undefined') {
         const clubberCount = document.getElementById('clubber-count');
@@ -1508,36 +1782,62 @@
         currentUser = auth.currentUser;
         if (!currentUser) return;
 
-        myUserId = currentUser.uid;
-        state.user.id = myUserId;
+        // Ecoute en direct de l'ensemble des profils créés par l'équipe
+        const profilesCol = collection(db, 'artifacts', appId, 'public', 'data', 'profiles');
+        onSnapshot(profilesCol, (snapshot) => {
+          const list = [];
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            if (data && data.name) {
+              list.push({ docId: docSnap.id, ...data });
+            }
+          });
+          state.savedProfiles = list;
+          renderEntranceProfilesList();
+        }, (err) => {
+          console.warn("Profiles listener error:", err);
+        });
 
-        if (uidBadge) uidBadge.innerText = myUserId;
-        if (accountUidBadge) accountUidBadge.innerText = myUserId;
-
+        // Détection automatique de session précédente sur cette machine
         try {
-          const profileDocRef = doc(db, 'artifacts', appId, 'users', myUserId, 'profile', 'user_data');
-          const snap = await getDoc(profileDocRef);
-          if (snap.exists()) {
-            const saved = snap.data();
-            if (saved.name) state.user.name = saved.name;
-            if (saved.email) state.user.email = saved.email;
-            if (saved.skinColor) state.user.skinColor = saved.skinColor;
-            if (saved.outfitColor) state.user.outfitColor = saved.outfitColor;
-            if (saved.hairStyle) state.user.hairStyle = saved.hairStyle;
-            if (saved.hairColor) state.user.hairColor = saved.hairColor;
-            if (saved.accessory) state.user.accessory = saved.accessory;
+          const sessionRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'session');
+          const sessionSnap = await getDoc(sessionRef);
+          if (sessionSnap.exists()) {
+            const sessData = sessionSnap.data();
+            if (sessData && sessData.activeProfileId) {
+              const profRef = doc(db, 'artifacts', appId, 'public', 'data', 'profiles', sessData.activeProfileId);
+              const pSnap = await getDoc(profRef);
+              if (pSnap.exists()) {
+                const prevProf = pSnap.data();
+                const resumeBox = document.getElementById('quick-resume-box');
+                const resumeName = document.getElementById('quick-resume-name');
+                const resumeEmail = document.getElementById('quick-resume-email');
+                const resumeBadge = document.getElementById('quick-resume-avatar-badge');
+                const resumeBtn = document.getElementById('btn-quick-resume');
 
-            updateCorporateUI();
-            setupAvatarCustomizer();
-          } else {
-            await saveUserProfileToCloud();
+                if (resumeBox && resumeName) {
+                  resumeName.innerText = prevProf.name;
+                  if (resumeEmail) resumeEmail.innerText = prevProf.email || 'Mon profil';
+                  if (resumeBadge) {
+                    resumeBadge.innerText = prevProf.name.charAt(0).toUpperCase();
+                    resumeBadge.style.backgroundColor = prevProf.outfitColor || '#ec4899';
+                  }
+                  resumeBox.classList.remove('hidden');
+
+                  resumeBtn?.addEventListener('click', () => {
+                    activateProfile(prevProf);
+                  });
+                }
+              }
+            }
           }
-        } catch (e) {
-          console.warn("Profil privé:", e);
+        } catch(e) {
+          console.warn("Vérification session:", e);
         }
 
-        broadcastPresence();
-        setInterval(broadcastPresence, 3500);
+        setInterval(() => {
+          if (state.isAccountSelected) broadcastPresence();
+        }, 3500);
 
         const clubbersCol = collection(db, 'artifacts', appId, 'public', 'data', 'clubbers');
         onSnapshot(clubbersCol, (snapshot) => {
@@ -1546,7 +1846,7 @@
 
           snapshot.forEach((snapDoc) => {
             const data = snapDoc.data();
-            if (data.id !== myUserId && (now - (data.lastSeen || 0) < 12000)) {
+            if (data.id !== state.user.id && (now - (data.lastSeen || 0) < 12000)) {
               activeUsers.push(data);
             }
           });
@@ -1831,6 +2131,9 @@
     }
 
     function setupModalsAndControls() {
+      // Toggle Audio Button
+      document.getElementById('btn-toggle-audio')?.addEventListener('click', toggleAudio);
+
       // Modal Compte & Avatar
       const modalAccount = document.getElementById('modal-account');
       const btnOpenAccount = document.getElementById('btn-open-account');
@@ -1871,6 +2174,16 @@
           showToast(`ID : ${fullId}`);
         }
         document.body.removeChild(temp);
+      });
+
+      // Bouton Changer de Compte depuis la modale Mon Compte
+      document.getElementById('btn-switch-account')?.addEventListener('click', () => {
+        if (modalAccount) modalAccount.classList.add('hidden');
+        const entrance = document.getElementById('entrance-modal');
+        if (entrance) {
+          entrance.classList.remove('hidden');
+          renderEntranceProfilesList();
+        }
       });
 
       btnSaveAccount?.addEventListener('click', async () => {
@@ -2741,6 +3054,11 @@
 
     function clubAnimationLoop() {
       frameCount++;
+
+      if (!ctx || width === 0 || height === 0) {
+        requestAnimationFrame(clubAnimationLoop);
+        return;
+      }
 
       const activeAudio = state.activeDeck === 'A' ? audioDeckA : audioDeckB;
       const isAudioPlaying = (!activeAudio.paused && activeAudio.currentTime > 0) || emergencySynthRunning;

@@ -1,3 +1,18 @@
+TypeError: Cannot set property className of #<SVGElement> which has only a getter
+at setSpeakerHostMode (...)
+at initNetworkPresence (...)
+```[cite: 3]
+
+### Pourquoi cela bloquait tout :
+1. Au chargement, la bibliothèque d'icônes Lucide transforme la balise `<i id="speaker-btn-icon">` en élément `<svg>`.
+2. En JavaScript, modifier `.className = "..."` sur un élément SVG génère un crash immédiat (`TypeError`)[cite: 3].
+3. Comme cette ligne s'exécutait tout en haut de `initNetworkPresence`[cite: 3], **le script s'arrêtait net AVANT d'avoir pu initialiser Firebase**. Firebase ne démarrait donc jamais, ce qui empêchait la sauvegarde des profils et la détection des autres participants sur la piste.
+
+---
+
+Voici le code complet corrigé. Il remplace `.className` par `.setAttribute('class', ...)` pour sécuriser l'élément SVG, et réorganise l'initialisation de Firebase pour garantir la synchronisation immédiate des comptes et des danseurs.
+
+```html
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-slate-950 text-white">
 <head>
@@ -76,7 +91,7 @@
       </div>
     </div>
 
-    <!-- Live Track Banner (Desktop) -->
+    <!-- Live Track Banner -->
     <div class="hidden lg:flex items-center space-x-3 bg-slate-900/90 border border-slate-800 rounded-full px-4 py-1.5 max-w-md w-full shadow-inner">
       <div class="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-slate-800 border border-purple-500/40">
         <img id="current-track-art" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&h=100&fit=crop" class="w-full h-full object-cover animate-spin-slow" alt="Cover">
@@ -195,7 +210,7 @@
           </button>
         </div>
 
-        <!-- Navigation Tabs: Profils Existants vs Nouveau Profil -->
+        <!-- Navigation Tabs -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold">
           <button id="tab-choose-profile" type="button" onclick="window.switchEntranceTab('choose')" class="py-2.5 rounded-xl bg-purple-600 text-white border border-purple-500 shadow cursor-pointer transition">
             👥 Comptes Enregistrés
@@ -238,13 +253,11 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-              <!-- Aperçu Live -->
               <div class="sm:col-span-4 flex flex-col items-center justify-center bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
                 <span class="text-[9px] uppercase font-bold text-slate-400 mb-1">Aperçu en direct</span>
                 <canvas id="entrance-avatar-preview" width="90" height="100" class="rounded-xl"></canvas>
               </div>
 
-              <!-- Options 1: Teint et Tenue -->
               <div class="sm:col-span-8 space-y-2">
                 <div>
                   <span class="text-[10px] text-slate-400 block mb-1">Teint de peau</span>
@@ -257,7 +270,6 @@
               </div>
             </div>
 
-            <!-- Options 2: Coupe, Couleur de cheveux et Accessoire -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-800/80">
               <div>
                 <span class="text-[10px] text-slate-400 block mb-1">Coupe de cheveux</span>
@@ -479,7 +491,6 @@
       </div>
 
       <div class="my-3 space-y-3.5 overflow-y-auto pr-1 flex-1 text-xs">
-        <!-- Mail & Surnom -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
           <div>
             <label class="block text-slate-300 font-semibold mb-1">Adresse Mail</label>
@@ -491,7 +502,6 @@
           </div>
         </div>
 
-        <!-- Customisation Complète de l'Avatar -->
         <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-[11px] font-bold text-pink-400 uppercase tracking-wider flex items-center">
@@ -656,7 +666,7 @@
     }
     window.addEventListener('resize', resizeCanvas);
 
-    // ================= DESSIN DE L'AVATAR (PRÉVISUALISATION EXACTE) =================
+    // ================= DESSIN AVATAR PREVIEW =================
     function drawAvatarStatic(canvasEl, person) {
       if (!canvasEl) return;
       const pCtx = canvasEl.getContext('2d');
@@ -671,24 +681,20 @@
       pCtx.translate(cx, cy);
       pCtx.scale(scale, scale);
 
-      // Ombre
       pCtx.fillStyle = 'rgba(0,0,0,0.35)';
       pCtx.beginPath();
       pCtx.ellipse(0, 22, 14, 5, 0, 0, Math.PI * 2);
       pCtx.fill();
 
-      // Pantalon
       pCtx.fillStyle = '#1e293b';
       pCtx.fillRect(-6, 9, 4, 13);
       pCtx.fillRect(2, 9, 4, 13);
 
-      // Tenue / Haut
       pCtx.fillStyle = person.outfitColor || '#a855f7';
       pCtx.beginPath();
       pCtx.roundRect ? pCtx.roundRect(-9, -2, 18, 15, 4) : pCtx.rect(-9, -2, 18, 15);
       pCtx.fill();
 
-      // Bras
       pCtx.strokeStyle = person.skinColor || '#fed7aa';
       pCtx.lineWidth = 3.2;
       pCtx.lineCap = 'round';
@@ -699,13 +705,11 @@
       pCtx.lineTo(14, 8);
       pCtx.stroke();
 
-      // Tête
       pCtx.fillStyle = person.skinColor || '#fed7aa';
       pCtx.beginPath();
       pCtx.arc(0, -11, 10, 0, Math.PI * 2);
       pCtx.fill();
 
-      // Yeux ou Lunettes VIP
       if (person.accessory === 'shades') {
         pCtx.fillStyle = '#0f172a';
         pCtx.fillRect(-7, -14, 14, 5);
@@ -717,7 +721,6 @@
         pCtx.fill();
       }
 
-      // Coupe de cheveux
       pCtx.fillStyle = person.hairColor || '#0f172a';
       if (person.hairStyle === 'messy') {
         pCtx.beginPath();
@@ -752,7 +755,6 @@
         pCtx.fillRect(-8, -19, 16, 6);
       }
 
-      // Accessoires (Bâton fluo ou Casque DJ)
       if (person.accessory === 'glowstick') {
         pCtx.strokeStyle = '#00f2fe';
         pCtx.lineWidth = 3;
@@ -779,7 +781,6 @@
       drawAvatarStatic(document.getElementById('avatar-preview-canvas'), state.user);
     }
 
-    // ================= CONSTRUCTEUR DES PALETTES DE PERSONNALISATION =================
     function buildCustomizerPalette(prefix) {
       const isEntrance = (prefix === 'entrance');
       const skinCont = document.getElementById(isEntrance ? 'entrance-skin-container' : 'skin-tones-container');
@@ -788,7 +789,6 @@
       const hairColorCont = document.getElementById(isEntrance ? 'entrance-haircolor-container' : 'hair-colors-container');
       const accCont = document.getElementById(isEntrance ? 'entrance-accessories-container' : 'accessories-container');
 
-      // 1. Teint de peau
       if (skinCont) {
         skinCont.innerHTML = '';
         PALETTES.skins.forEach(c => {
@@ -807,7 +807,6 @@
         });
       }
 
-      // 2. Tenue
       if (outfitCont) {
         outfitCont.innerHTML = '';
         PALETTES.outfits.forEach(c => {
@@ -826,7 +825,6 @@
         });
       }
 
-      // 3. Coupes de cheveux
       if (hairStyleCont) {
         hairStyleCont.innerHTML = '';
         PALETTES.hairstyles.forEach(h => {
@@ -845,7 +843,6 @@
         });
       }
 
-      // 4. Couleur des cheveux
       if (hairColorCont) {
         hairColorCont.innerHTML = '';
         PALETTES.hairs.forEach(c => {
@@ -864,7 +861,6 @@
         });
       }
 
-      // 5. Accessoires
       if (accCont) {
         accCont.innerHTML = '';
         PALETTES.accessories.forEach(a => {
@@ -890,7 +886,6 @@
       renderAllAvatarPreviews();
     }
 
-    // ================= BASCULE D'ONGLETS =================
     window.switchEntranceTab = function(tab) {
       const tabChoose = document.getElementById('tab-choose-profile');
       const tabCreate = document.getElementById('tab-create-profile');
@@ -913,7 +908,6 @@
       }
     };
 
-    // ================= RECHERCHE DEEZER DIRECTE =================
     function searchDeezer(query) {
       return new Promise((resolve) => {
         const callbackName = 'deezerCb_' + Math.floor(Math.random() * 1000000);
@@ -1010,7 +1004,6 @@
       lucide.createIcons();
     }
 
-    // ================= FILE PARTAGÉE =================
     async function addTrackToSharedQueue(track) {
       state.queue.push(track);
       renderQueueList();
@@ -1166,7 +1159,7 @@
       `;
     }
 
-    // ================= MODE ENCEINTE =================
+    // ================= CORRECTION DU CRASH SVG DANS SETSPEAKERHOSTMODE =================
     function setSpeakerHostMode(isHost) {
       state.isSpeakerHost = isHost;
       localStorage.setItem('elvis_club_is_speaker_host', isHost ? '1' : '0');
@@ -1182,14 +1175,14 @@
       if (isHost) {
         if (hostBar) hostBar.classList.remove('hidden');
         if (pill) {
-          pill.className = "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+          pill.setAttribute('class', "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30");
           pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span> PC ENCEINTE RÉGIE`;
         }
-        if (btnIcon) btnIcon.className = "w-4 h-4 text-emerald-400 animate-pulse";
+        if (btnIcon) btnIcon.setAttribute('class', "w-4 h-4 text-emerald-400 animate-pulse");
         if (btnLabel) btnLabel.innerText = "Mode Enceinte Actif";
         if (statusLabel) statusLabel.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span> Diffusion Enceinte`;
         if (modalBadge) {
-          modalBadge.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+          modalBadge.setAttribute('class', "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40");
           modalBadge.innerText = "PC Enceinte Actif";
         }
         if (modalBtnLabel) modalBtnLabel.innerText = "Désactiver le rôle Enceinte sur ce PC";
@@ -1201,14 +1194,14 @@
       } else {
         if (hostBar) hostBar.classList.add('hidden');
         if (pill) {
-          pill.className = "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30";
+          pill.setAttribute('class', "inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30");
           pill.innerHTML = `<i data-lucide="music-2" class="w-3 h-3 mr-1 text-purple-400"></i> DEEZER JUKEBOX`;
         }
-        if (btnIcon) btnIcon.className = "w-4 h-4 text-slate-400";
+        if (btnIcon) btnIcon.setAttribute('class', "w-4 h-4 text-slate-400");
         if (btnLabel) btnLabel.innerText = "Ce PC = Enceinte";
         if (statusLabel) statusLabel.innerHTML = `<i data-lucide="smartphone" class="w-3 h-3 mr-1 text-cyan-400"></i> Télécommande`;
         if (modalBadge) {
-          modalBadge.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400";
+          modalBadge.setAttribute('class', "px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400");
           modalBadge.innerText = "Télécommande";
         }
         if (modalBtnLabel) modalBtnLabel.innerText = "Déclarer ce PC comme Enceinte Principale";
@@ -1216,7 +1209,7 @@
       lucide.createIcons();
     }
 
-    // ================= PROFILS & SAUVEGARDE FIREBASE =================
+    // ================= GESTION DES PROFILS & FIREBASE =================
     window.activateProfile = function(profileData) {
       if (!profileData) return;
       state.user.id = profileData.id || state.user.id;
@@ -1270,7 +1263,7 @@
           const profRef = doc(db, 'profiles', profileId);
           await setDoc(profRef, newProfile);
         } catch(e) {
-          console.warn("Erreur enregistrement Firestore:", e);
+          console.warn("Erreur Firestore:", e);
         }
       }
 

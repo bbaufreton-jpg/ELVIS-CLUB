@@ -48,7 +48,7 @@
     canvas { touch-action: none; }
   </style>
 </head>
-<body class="h-full w-full overflow-hidden flex flex-col font-sans select-none bg-club-dark">
+<body class="h-full w-full overflow-hidden flex flex-col font-sans bg-club-dark">
 
   <!-- ================= CLUB HUD NAVIGATION ================= -->
   <header class="h-16 px-3 sm:px-4 py-2 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md flex items-center justify-between z-30 shrink-0">
@@ -94,7 +94,6 @@
         </div>
       </div>
 
-      <!-- Quick Open in Deezer Desktop App -->
       <a id="btn-quick-deezer-app" href="https://www.deezer.com" target="_blank" title="Ouvrir sur Deezer" class="px-2.5 py-1 rounded-lg bg-purple-600/30 hover:bg-purple-600 text-purple-300 hover:text-white border border-purple-500/40 text-[11px] font-bold transition flex items-center space-x-1 shrink-0">
         <i data-lucide="external-link" class="w-3 h-3"></i>
         <span>Deezer</span>
@@ -103,26 +102,22 @@
 
     <!-- Right Controls -->
     <div class="flex items-center space-x-2">
-      <!-- Bouton bascule Mode Enceinte / Mode Télécommande -->
       <button id="btn-toggle-speaker-mode" title="Indiquer si cet ordinateur est branché à l'enceinte de la pièce" class="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-medium flex items-center space-x-1.5 transition">
         <i data-lucide="speaker" id="speaker-btn-icon" class="w-4 h-4 text-slate-400"></i>
         <span class="hidden md:inline" id="speaker-btn-label">Ce PC = Enceinte</span>
       </button>
 
-      <!-- Queue Button -->
       <button id="btn-open-queue" class="relative px-3 py-1.5 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-90 text-white font-medium text-xs sm:text-sm flex items-center space-x-1.5 shadow-lg shadow-purple-600/25 transition">
         <i data-lucide="list-plus" class="w-4 h-4"></i>
         <span>File DJ</span>
         <span id="queue-badge" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white text-purple-700 font-black">0</span>
       </button>
 
-      <!-- DJ Résident Deezer Settings -->
       <button id="btn-resident-dj" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 font-medium text-xs sm:text-sm flex items-center space-x-1.5 transition">
         <i data-lucide="crown" class="w-4 h-4 text-amber-400"></i>
         <span class="hidden sm:inline">DJ Résident</span>
       </button>
 
-      <!-- Mon Compte -->
       <button id="btn-open-account" class="p-1 sm:p-1.5 sm:pr-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-pink-500/40 hover:border-pink-500/70 flex items-center space-x-2 transition shadow">
         <div id="user-avatar-preview-badge" class="w-7 h-7 rounded-full bg-pink-500 flex items-center justify-center font-bold text-xs text-white border border-white/30">
           U
@@ -153,7 +148,6 @@
       </div>
     </div>
 
-    <!-- Actions Rapides DJ Résident pour l'enceinte -->
     <div class="flex items-center space-x-2 text-xs">
       <button id="btn-next-track-host" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold flex items-center space-x-1.5 shadow transition">
         <i data-lucide="skip-forward" class="w-3.5 h-3.5"></i>
@@ -169,8 +163,7 @@
   <!-- ================= MAIN CLUB SIMULATION CANVAS ================= -->
   <main class="relative flex-1 w-full h-full overflow-hidden bg-black flex items-center justify-center">
     
-    <!-- 2D Interactive Canvas -->
-    <canvas id="club-canvas" class="w-full h-full block cursor-pointer"></canvas>
+    <canvas id="club-canvas" class="w-full h-full block cursor-pointer select-none"></canvas>
 
     <!-- Collaborative Entrance & Persistent Account Selector -->
     <div id="entrance-modal" class="absolute inset-0 z-40 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 overflow-y-auto">
@@ -185,7 +178,7 @@
           <p class="text-xs text-slate-400">Connecté à l'enceinte Deezer du bureau • Choisis ton profil pour danser</p>
         </div>
 
-        <!-- Quick Resume Box (reconnexion automatique) -->
+        <!-- Quick Resume Box -->
         <div id="quick-resume-box" class="hidden p-3 rounded-2xl bg-gradient-to-r from-purple-950/40 via-pink-950/30 to-slate-900 border border-purple-500/40 flex items-center justify-between">
           <div class="flex items-center space-x-3 min-w-0 pr-2">
             <div id="quick-resume-avatar-badge" class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm border-2 border-purple-400 shadow shrink-0">
@@ -197,19 +190,19 @@
               <p class="text-[10px] text-slate-400 truncate" id="quick-resume-email">email@elvis.club</p>
             </div>
           </div>
-          <button id="btn-quick-resume" class="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shrink-0 flex items-center space-x-1.5 shadow-lg shadow-purple-600/30 transition">
+          <button id="btn-quick-resume" type="button" class="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shrink-0 flex items-center space-x-1.5 shadow-lg shadow-purple-600/30 transition">
             <i data-lucide="play" class="w-3.5 h-3.5"></i>
             <span>Rejoindre la piste</span>
           </button>
         </div>
 
-        <!-- Navigation Tabs: Profils Existants vs Nouveau Collaborateur -->
+        <!-- Navigation Tabs: Profils Existants vs Nouveau Profil -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold">
-          <button id="tab-choose-profile" class="py-2 rounded-xl bg-purple-600 text-white border border-purple-500 shadow">
+          <button id="tab-choose-profile" type="button" onclick="window.switchEntranceTab('choose')" class="py-2.5 rounded-xl bg-purple-600 text-white border border-purple-500 shadow cursor-pointer transition">
             👥 Comptes Enregistrés
           </button>
-          <button id="tab-create-profile" class="py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700">
-            ➕ Nouveau Collaborateur
+          <button id="tab-create-profile" type="button" onclick="window.switchEntranceTab('create')" class="py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 cursor-pointer transition">
+            ➕ Nouveau Profil
           </button>
         </div>
 
@@ -222,7 +215,7 @@
           <div id="existing-profiles-list" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
         </div>
 
-        <!-- PANEL 2: Formulaire Nouveau Compte simplifié (Mail, Surnom, Avatar) -->
+        <!-- PANEL 2: Formulaire Nouveau Profil -->
         <div id="panel-create-profile" class="hidden space-y-3">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div>
@@ -258,12 +251,11 @@
             </div>
           </div>
 
-          <button id="btn-submit-new-profile" class="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:opacity-90 text-white font-display font-bold text-xs tracking-wider shadow-lg shadow-purple-600/30 transition">
-            ✨ ENTRER DANS LE CLUB
+          <button id="btn-submit-new-profile" type="button" onclick="window.createAndActivateNewProfile()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:opacity-90 text-white font-display font-bold text-xs tracking-wider shadow-lg shadow-purple-600/30 transition cursor-pointer">
+            ✨ CRÉER MON COMPTE & ENTRER DANS LE CLUB
           </button>
         </div>
 
-        <!-- Choix initial PC Enceinte vs Smartphone/Laptop -->
         <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
           <label class="flex items-center space-x-2 cursor-pointer">
             <input type="checkbox" id="checkbox-initial-speaker" class="rounded bg-slate-950 border-slate-700 text-purple-600 focus:ring-0">
@@ -276,9 +268,7 @@
     <!-- DJ Booth Announcement Floating Banner -->
     <div id="dj-banner" class="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-950/90 border border-purple-500/50 backdrop-blur-md px-4 sm:px-5 py-2 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none transition-all duration-300 z-10">
       <div class="relative">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-purple-500 flex items-center justify-center overflow-hidden bg-slate-900" id="current-dj-avatar-container">
-          <!-- Mini SVG avatar inséré dynamiquement -->
-        </div>
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-purple-500 flex items-center justify-center overflow-hidden bg-slate-900" id="current-dj-avatar-container"></div>
         <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-black flex items-center justify-center text-[7px] font-bold">✓</span>
       </div>
       <div>
@@ -332,8 +322,6 @@
   <!-- ================= MODAL: FILE D'ATTENTE & RECHERCHE DEEZER ================= -->
   <div id="modal-queue" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-purple-500/40 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
-      
-      <!-- Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
         <div class="flex items-center space-x-2.5">
           <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
@@ -349,7 +337,6 @@
         </button>
       </div>
 
-      <!-- Search Box (Deezer API directe en JSONP) -->
       <div class="my-3 space-y-2 shrink-0">
         <div class="relative flex items-center">
           <input type="text" id="deezer-search-input" placeholder="Rechercher sur Deezer (ex: Daft Punk, Fred again, Dua Lipa...)" class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-4 pr-24 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500">
@@ -359,13 +346,11 @@
           </button>
         </div>
 
-        <!-- Deezer Search Results -->
         <div id="deezer-results-box" class="hidden max-h-44 overflow-y-auto space-y-1.5 pr-1 bg-slate-950/60 p-2 rounded-2xl border border-slate-800">
           <div id="deezer-results-list" class="space-y-1.5"></div>
         </div>
       </div>
 
-      <!-- Current Queue List -->
       <div class="flex-1 overflow-y-auto min-h-0 pr-1 space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center">
@@ -377,7 +362,6 @@
 
         <div id="queue-items-container" class="space-y-2"></div>
 
-        <!-- Empty State -->
         <div id="empty-queue-notice" class="p-6 text-center rounded-2xl bg-slate-950/50 border border-dashed border-slate-800">
           <i data-lucide="disc" class="w-8 h-8 mx-auto text-slate-600 mb-2"></i>
           <p class="text-sm font-semibold text-slate-300">La file d'attente est vide !</p>
@@ -385,7 +369,6 @@
         </div>
       </div>
 
-      <!-- Integrated Deezer Web Player Widget (Sur PC Enceinte) -->
       <div id="deezer-widget-container" class="mt-3 pt-3 border-t border-slate-800 shrink-0">
         <div class="flex items-center justify-between mb-1.5">
           <span class="text-[11px] font-bold text-purple-300 flex items-center">
@@ -395,10 +378,8 @@
             Ouvrir dans Deezer &rarr;
           </a>
         </div>
-        <!-- Iframe widget Deezer officiel -->
         <iframe id="deezer-player-frame" title="Deezer Player" src="https://widget.deezer.com/widget/dark/track/3135556" width="100%" height="92" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write" class="rounded-xl bg-slate-950"></iframe>
       </div>
-
     </div>
   </div>
 
@@ -431,7 +412,6 @@
           </div>
         </div>
 
-        <!-- Box activation PC Enceinte -->
         <div class="p-3.5 rounded-2xl bg-purple-950/40 border border-purple-500/40 space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-bold text-white text-xs">Rôle de cet ordinateur :</span>
@@ -462,11 +442,9 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: MON COMPTE (MAIL, SURNOM, AVATAR) ================= -->
+  <!-- ================= MODAL: MON COMPTE ================= -->
   <div id="modal-account" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] flex flex-col overflow-hidden">
-      
-      <!-- Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
         <div class="flex items-center space-x-2">
           <div class="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center">
@@ -482,9 +460,7 @@
         </button>
       </div>
 
-      <!-- Content -->
       <div class="my-3 space-y-3 overflow-y-auto pr-1 flex-1 text-xs">
-        <!-- Mail & Surnom -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
           <div>
             <label class="block text-slate-300 font-semibold mb-1">Adresse Mail</label>
@@ -496,7 +472,6 @@
           </div>
         </div>
 
-        <!-- Customisation du Look -->
         <div class="bg-slate-950/70 p-3 rounded-2xl border border-slate-800 space-y-3">
           <div class="flex items-center space-x-4">
             <div class="flex flex-col items-center bg-slate-900 p-2.5 rounded-2xl border border-slate-800 shrink-0">
@@ -529,7 +504,6 @@
         </div>
       </div>
 
-      <!-- Footer Buttons -->
       <div class="flex items-center space-x-2 pt-3 border-t border-slate-800 shrink-0">
         <button id="btn-switch-account" type="button" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs border border-slate-700 transition flex items-center space-x-1">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
@@ -540,17 +514,15 @@
           <span>Enregistrer</span>
         </button>
       </div>
-
     </div>
   </div>
 
-  <!-- ================= JAVASCRIPT & FIREBASE REAL-TIME LOGIC ================= -->
+  <!-- ================= JAVASCRIPT & FIREBASE LOGIC ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // Configuration Firebase fournie
     const firebaseConfig = {
       apiKey: "AIzaSyCLUARyrrww_Fr_rddkhtYA4Y7XK5vxPIg",
       authDomain: "elvis-club.firebaseapp.com",
@@ -653,7 +625,30 @@
     }
     window.addEventListener('resize', resizeCanvas);
 
-    // ================= RECHERCHE DEEZER EN DIRECT (JSONP) =================
+    // ================= BASCULE D'ONGLETS SÉCURISÉE =================
+    window.switchEntranceTab = function(tab) {
+      const tabChoose = document.getElementById('tab-choose-profile');
+      const tabCreate = document.getElementById('tab-create-profile');
+      const panelChoose = document.getElementById('panel-choose-profile');
+      const panelCreate = document.getElementById('panel-create-profile');
+
+      if (!tabChoose || !tabCreate || !panelChoose || !panelCreate) return;
+
+      if (tab === 'create') {
+        tabCreate.className = 'py-2.5 rounded-xl bg-purple-600 text-white border border-purple-500 shadow cursor-pointer transition';
+        tabChoose.className = 'py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 cursor-pointer transition';
+        panelCreate.classList.remove('hidden');
+        panelChoose.classList.add('hidden');
+        renderEntranceAvatarMini();
+      } else {
+        tabChoose.className = 'py-2.5 rounded-xl bg-purple-600 text-white border border-purple-500 shadow cursor-pointer transition';
+        tabCreate.className = 'py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 cursor-pointer transition';
+        panelChoose.classList.remove('hidden');
+        panelCreate.classList.add('hidden');
+      }
+    };
+
+    // ================= RECHERCHE DEEZER EN DIRECT =================
     function searchDeezer(query) {
       return new Promise((resolve) => {
         const callbackName = 'deezerCb_' + Math.floor(Math.random() * 1000000);
@@ -672,11 +667,8 @@
 
         window[callbackName] = (response) => {
           cleanup();
-          if (response && response.data) {
-            resolve(response.data);
-          } else {
-            resolve([]);
-          }
+          if (response && response.data) resolve(response.data);
+          else resolve([]);
         };
 
         script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=8&output=jsonp&callback=${callbackName}`;
@@ -753,7 +745,7 @@
       lucide.createIcons();
     }
 
-    // ================= GESTION DE LA FILE D'ATTENTE SYNCHRONISÉE =================
+    // ================= FILE SYNCHRONISÉE =================
     async function addTrackToSharedQueue(track) {
       state.queue.push(track);
       renderQueueList();
@@ -807,9 +799,7 @@
 
       if (state.isSpeakerHost && state.currentTrack?.deezerId) {
         const frame = document.getElementById('deezer-player-frame');
-        if (frame) {
-          frame.src = `https://widget.deezer.com/widget/dark/track/${state.currentTrack.deezerId}?autoplay=true`;
-        }
+        if (frame) frame.src = `https://widget.deezer.com/widget/dark/track/${state.currentTrack.deezerId}?autoplay=true`;
       }
 
       if (db) {
@@ -831,16 +821,18 @@
       const badge = document.getElementById('queue-badge');
       const countText = document.getElementById('queue-count-text');
 
+      if (!container || !badge || !countText) return;
+
       badge.innerText = state.queue.length;
       countText.innerText = `${state.queue.length} morceau${state.queue.length > 1 ? 'x' : ''}`;
 
       if (state.queue.length === 0) {
         container.innerHTML = '';
-        emptyNotice.classList.remove('hidden');
+        if (emptyNotice) emptyNotice.classList.remove('hidden');
         return;
       }
 
-      emptyNotice.classList.add('hidden');
+      if (emptyNotice) emptyNotice.classList.add('hidden');
       container.innerHTML = '';
 
       state.queue.forEach((item, idx) => {
@@ -909,7 +901,7 @@
       `;
     }
 
-    // ================= MODE ENCEINTE VS MODE CLUBBER =================
+    // ================= MODE ENCEINTE =================
     function setSpeakerHostMode(isHost) {
       state.isSpeakerHost = isHost;
       localStorage.setItem('elvis_club_is_speaker_host', isHost ? '1' : '0');
@@ -960,7 +952,7 @@
     }
 
     // ================= PROFILS & SAUVEGARDE FIREBASE =================
-    function activateProfile(profileData) {
+    window.activateProfile = function(profileData) {
       if (!profileData) return;
       state.user.id = profileData.id || state.user.id;
       state.user.name = profileData.name || 'Clubber';
@@ -982,9 +974,9 @@
 
       broadcastPresence();
       showToast(`👋 Bienvenue sur la piste, ${state.user.name} !`);
-    }
+    };
 
-    async function createAndActivateNewProfile() {
+    window.createAndActivateNewProfile = async function() {
       const email = document.getElementById('entrance-input-email')?.value.trim() || '';
       const name = document.getElementById('entrance-input-name')?.value.trim() || '';
 
@@ -1022,8 +1014,8 @@
       else state.savedProfiles.push(newProfile);
       localStorage.setItem('elvis_club_saved_profiles', JSON.stringify(state.savedProfiles));
 
-      activateProfile(newProfile);
-    }
+      window.activateProfile(newProfile);
+    };
 
     function renderEntranceProfilesList() {
       const container = document.getElementById('existing-profiles-list');
@@ -1035,7 +1027,10 @@
           <div class="p-6 text-center rounded-2xl bg-slate-950/40 border border-dashed border-slate-800">
             <i data-lucide="user-plus" class="w-6 h-6 mx-auto text-purple-400 mb-1"></i>
             <p class="text-xs font-semibold text-slate-300">Aucun profil enregistré pour le moment.</p>
-            <p class="text-[11px] text-slate-500 mt-1">Crée ton profil dans l'onglet « Nouveau Collaborateur » !</p>
+            <p class="text-[11px] text-slate-500 mt-1">Crée ton profil dans l'onglet « Nouveau Profil » !</p>
+            <button type="button" onclick="window.switchEntranceTab('create')" class="mt-3 px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition inline-flex items-center space-x-1 shadow">
+              <span>👉 Créer mon profil maintenant</span>
+            </button>
           </div>
         `;
         if (countEl) countEl.innerText = "0 profil";
@@ -1059,13 +1054,13 @@
               <p class="text-[10px] text-slate-400 truncate font-mono">${prof.email || 'Sans email'}</p>
             </div>
           </div>
-          <button class="px-3 py-1.5 rounded-xl bg-purple-600/20 group-hover:bg-purple-600 text-purple-300 group-hover:text-white font-bold text-xs shrink-0 transition flex items-center space-x-1">
+          <button type="button" class="px-3 py-1.5 rounded-xl bg-purple-600/20 group-hover:bg-purple-600 text-purple-300 group-hover:text-white font-bold text-xs shrink-0 transition flex items-center space-x-1">
             <span>Entrer</span>
             <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
           </button>
         `;
 
-        item.addEventListener('click', () => activateProfile(prof));
+        item.addEventListener('click', () => window.activateProfile(prof));
         container.appendChild(item);
       });
       lucide.createIcons();
@@ -1100,28 +1095,6 @@
     }
 
     function setupEntranceControls() {
-      const tabChoose = document.getElementById('tab-choose-profile');
-      const tabCreate = document.getElementById('tab-create-profile');
-      const panelChoose = document.getElementById('panel-choose-profile');
-      const panelCreate = document.getElementById('panel-create-profile');
-
-      tabChoose?.addEventListener('click', () => {
-        tabChoose.className = 'py-2 rounded-xl bg-purple-600 text-white border border-purple-500 shadow';
-        tabCreate.className = 'py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
-        panelChoose.classList.remove('hidden');
-        panelCreate.classList.add('hidden');
-      });
-
-      tabCreate?.addEventListener('click', () => {
-        tabCreate.className = 'py-2 rounded-xl bg-purple-600 text-white border border-purple-500 shadow';
-        tabChoose.className = 'py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
-        panelCreate.classList.remove('hidden');
-        panelChoose.classList.add('hidden');
-        renderEntranceAvatarMini();
-      });
-
-      document.getElementById('btn-submit-new-profile')?.addEventListener('click', createAndActivateNewProfile);
-
       const skinCont = document.getElementById('entrance-skin-container');
       if (skinCont) {
         skinCont.innerHTML = '';
@@ -1132,6 +1105,8 @@
           btn.style.backgroundColor = c;
           btn.addEventListener('click', () => {
             state.user.skinColor = c;
+            skinCont.querySelectorAll('button').forEach(b => b.className = 'w-5 h-5 rounded-full border shrink-0 border-transparent');
+            btn.className = 'w-5 h-5 rounded-full border shrink-0 border-white scale-110 shadow';
             renderEntranceAvatarMini();
           });
           skinCont.appendChild(btn);
@@ -1148,6 +1123,8 @@
           btn.style.backgroundColor = c;
           btn.addEventListener('click', () => {
             state.user.outfitColor = c;
+            outfitCont.querySelectorAll('button').forEach(b => b.className = 'w-5 h-5 rounded-full border shrink-0 border-transparent');
+            btn.className = 'w-5 h-5 rounded-full border shrink-0 border-white scale-110 shadow';
             renderEntranceAvatarMini();
           });
           outfitCont.appendChild(btn);
@@ -1209,7 +1186,7 @@
               resumeBadge.style.backgroundColor = p.outfitColor || '#a855f7';
             }
             resumeBox.classList.remove('hidden');
-            resumeBtn?.addEventListener('click', () => activateProfile(p));
+            resumeBtn?.addEventListener('click', () => window.activateProfile(p));
           }
         }
       } catch(e) {}
@@ -1217,16 +1194,18 @@
       setupEntranceControls();
       renderEntranceProfilesList();
 
-      // Initialisation de Firebase avec vos identifiants
       try {
         const app = initializeApp(firebaseConfig);
         auth = getAuth(app);
         db = getFirestore(app);
 
-        await signInAnonymously(auth);
-        currentUser = auth.currentUser;
+        try {
+          await signInAnonymously(auth);
+          currentUser = auth.currentUser;
+        } catch(authErr) {
+          console.warn("Auth anonyme Firebase:", authErr);
+        }
 
-        // Synchronisation de la file et du son
         const playbackRef = doc(db, 'club_state', 'playback');
         onSnapshot(playbackRef, (snap) => {
           if (snap.exists()) {
@@ -1244,7 +1223,6 @@
           }
         });
 
-        // Synchronisation de tous les profils enregistrés
         const profilesCol = collection(db, 'profiles');
         onSnapshot(profilesCol, (snapshot) => {
           const list = [];
@@ -1259,7 +1237,6 @@
           }
         });
 
-        // Synchronisation des collègues connectés en temps réel
         const clubbersCol = collection(db, 'clubbers');
         onSnapshot(clubbersCol, (snapshot) => {
           const now = Date.now();
@@ -1574,7 +1551,7 @@
       }, 3500);
     }
 
-    // ================= DESSIN DU CLUB ET ANIMATIONS =================
+    // ================= DESSIN ET ANIMATION DU CLUB =================
     let frameCount = 0;
     const softSpotlights = [
       { angle: 0.2, speed: 0.004, color: 'rgba(168, 85, 247, 0.07)' },
@@ -1910,14 +1887,21 @@
       state.user.targetY = Math.max(minFloorY, Math.min(maxFloorY, clickY));
     });
 
-    window.addEventListener('load', () => {
+    // Initialisation immédiate sans attendre l'événement window.load
+    function startApp() {
       lucide.createIcons();
       resizeCanvas();
       setupAvatarCustomizer();
       setupModalsAndControls();
       initNetworkPresence();
       requestAnimationFrame(clubAnimationLoop);
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startApp);
+    } else {
+      startApp();
+    }
   </script>
 </body>
 </html>

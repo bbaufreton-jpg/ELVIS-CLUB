@@ -52,7 +52,6 @@
 
   <!-- ================= CLUB HUD NAVIGATION ================= -->
   <header class="h-16 px-3 sm:px-4 py-2 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md flex items-center justify-between z-30 shrink-0">
-    <!-- Brand / Status -->
     <div class="flex items-center space-x-2.5 sm:space-x-3">
       <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-club-neonPink via-purple-600 to-club-neonCyan flex items-center justify-center shadow-lg shadow-pink-500/20 shrink-0">
         <i data-lucide="disc-3" class="w-5 h-5 sm:w-6 sm:h-6 text-white animate-spin-slow"></i>
@@ -130,7 +129,7 @@
     </div>
   </header>
 
-  <!-- ================= REGIE BAR (PC CONNECTÉ À L'ENCEINTE) ================= -->
+  <!-- ================= REGIE BAR ================= -->
   <div id="speaker-host-bar" class="hidden bg-gradient-to-r from-purple-950/90 via-slate-900/95 to-slate-950 border-b border-purple-500/40 px-4 py-2 z-20 flex flex-wrap items-center justify-between gap-2 shadow-lg">
     <div class="flex items-center space-x-3">
       <span class="relative flex h-3 w-3">
@@ -166,8 +165,8 @@
     <canvas id="club-canvas" class="w-full h-full block cursor-pointer select-none"></canvas>
 
     <!-- Collaborative Entrance & Persistent Account Selector -->
-    <div id="entrance-modal" class="absolute inset-0 z-40 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 overflow-y-auto">
-      <div class="max-w-xl w-full bg-slate-900 border border-purple-500/40 p-5 sm:p-6 rounded-3xl shadow-2xl my-auto space-y-4 relative">
+    <div id="entrance-modal" class="absolute inset-0 z-40 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div class="max-w-2xl w-full bg-slate-900 border border-purple-500/40 p-5 sm:p-6 rounded-3xl shadow-2xl my-auto space-y-4 relative">
         <div class="text-center space-y-1">
           <div class="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-purple-500/30">
             <i data-lucide="disc-3" class="w-6 h-6 text-white animate-spin-slow"></i>
@@ -175,7 +174,7 @@
           <h2 class="font-display font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-cyan-400">
             BIENVENUE À L'ELVIS CLUB
           </h2>
-          <p class="text-xs text-slate-400">Connecté à l'enceinte Deezer du bureau • Choisis ton profil pour danser</p>
+          <p class="text-xs text-slate-400">Connecté à l'enceinte Deezer du bureau • Crée ton personnage et rejoins la piste</p>
         </div>
 
         <!-- Quick Resume Box -->
@@ -215,7 +214,7 @@
           <div id="existing-profiles-list" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
         </div>
 
-        <!-- PANEL 2: Formulaire Nouveau Profil -->
+        <!-- PANEL 2: Formulaire Nouveau Profil Complet -->
         <div id="panel-create-profile" class="hidden space-y-3">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div>
@@ -228,25 +227,49 @@
             </div>
           </div>
 
-          <!-- Avatar Quick Customizer -->
-          <div class="bg-slate-950/70 p-3 rounded-2xl border border-slate-800 space-y-2 text-xs">
+          <!-- Personnalisation d'Avatar Complète -->
+          <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800 space-y-3 text-xs">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] font-bold text-slate-300">Look de l'avatar</span>
-              <span class="text-[10px] text-emerald-400 font-semibold">Sauvegarde Firebase Cloud</span>
+              <span class="text-[11px] font-bold text-purple-300 uppercase tracking-wider flex items-center">
+                <i data-lucide="palette" class="w-3.5 h-3.5 mr-1.5 text-purple-400"></i>
+                Personnalisation de ton Danseur
+              </span>
+              <span class="text-[10px] text-emerald-400 font-semibold">Sauvegarde Cloud</span>
             </div>
-            <div class="flex items-center space-x-3">
-              <div class="w-16 h-20 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center shrink-0">
-                <canvas id="entrance-avatar-preview" width="60" height="74" class="rounded-lg"></canvas>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+              <!-- Aperçu Live -->
+              <div class="sm:col-span-4 flex flex-col items-center justify-center bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
+                <span class="text-[9px] uppercase font-bold text-slate-400 mb-1">Aperçu en direct</span>
+                <canvas id="entrance-avatar-preview" width="90" height="100" class="rounded-xl"></canvas>
               </div>
-              <div class="flex-1 space-y-2 min-w-0">
+
+              <!-- Options 1: Teint et Tenue -->
+              <div class="sm:col-span-8 space-y-2">
                 <div>
-                  <span class="text-[10px] text-slate-400 block mb-0.5">Teint de peau</span>
-                  <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5" id="entrance-skin-container"></div>
+                  <span class="text-[10px] text-slate-400 block mb-1">Teint de peau</span>
+                  <div class="flex flex-wrap gap-1.5" id="entrance-skin-container"></div>
                 </div>
                 <div>
-                  <span class="text-[10px] text-slate-400 block mb-0.5">Couleur de la tenue</span>
-                  <div class="flex items-center space-x-1.5 overflow-x-auto py-0.5" id="entrance-outfit-container"></div>
+                  <span class="text-[10px] text-slate-400 block mb-1">Couleur de la tenue</span>
+                  <div class="flex flex-wrap gap-1.5" id="entrance-outfit-container"></div>
                 </div>
+              </div>
+            </div>
+
+            <!-- Options 2: Coupe, Couleur de cheveux et Accessoire -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-800/80">
+              <div>
+                <span class="text-[10px] text-slate-400 block mb-1">Coupe de cheveux</span>
+                <div class="grid grid-cols-2 gap-1" id="entrance-hairstyles-container"></div>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-400 block mb-1">Couleur des cheveux</span>
+                <div class="flex flex-wrap gap-1.5" id="entrance-haircolor-container"></div>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-400 block mb-1">Accessoire</span>
+                <div class="grid grid-cols-2 gap-1" id="entrance-accessories-container"></div>
               </div>
             </div>
           </div>
@@ -427,11 +450,6 @@
             <span id="btn-set-as-speaker-label">Déclarer ce PC comme Enceinte Principale</span>
           </button>
         </div>
-
-        <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1 text-[11px] text-slate-400">
-          <p class="font-semibold text-slate-200">💡 Conseil pratique avec l'application Deezer :</p>
-          <p>Gardez votre application ou onglet Deezer ouvert sur votre PC. Quand un collègue ajoute un morceau, vous pouvez aussi cliquer sur « Lancer dans l'app Deezer » pour l'écouter instantanément dans votre appli !</p>
-        </div>
       </div>
 
       <div class="pt-2 border-t border-slate-800">
@@ -442,17 +460,17 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: MON COMPTE ================= -->
-  <div id="modal-account" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] flex flex-col overflow-hidden">
+  <!-- ================= MODAL: MON COMPTE (PERSONNALISATION COMPLÈTE) ================= -->
+  <div id="modal-account" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[94vh] flex flex-col overflow-hidden">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
         <div class="flex items-center space-x-2">
           <div class="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center">
             <i data-lucide="user" class="w-4 h-4"></i>
           </div>
           <div>
-            <h2 class="font-display font-bold text-base text-white">Mon Compte</h2>
-            <p class="text-xs text-slate-400">Mail, surnom et look d'avatar</p>
+            <h2 class="font-display font-bold text-base text-white">Mon Compte & Avatar</h2>
+            <p class="text-xs text-slate-400">Modifie ton mail, surnom, coupe et accessoires</p>
           </div>
         </div>
         <button id="btn-close-account" class="text-slate-400 hover:text-white p-1 rounded-lg bg-slate-800">
@@ -460,7 +478,8 @@
         </button>
       </div>
 
-      <div class="my-3 space-y-3 overflow-y-auto pr-1 flex-1 text-xs">
+      <div class="my-3 space-y-3.5 overflow-y-auto pr-1 flex-1 text-xs">
+        <!-- Mail & Surnom -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
           <div>
             <label class="block text-slate-300 font-semibold mb-1">Adresse Mail</label>
@@ -472,14 +491,22 @@
           </div>
         </div>
 
-        <div class="bg-slate-950/70 p-3 rounded-2xl border border-slate-800 space-y-3">
-          <div class="flex items-center space-x-4">
-            <div class="flex flex-col items-center bg-slate-900 p-2.5 rounded-2xl border border-slate-800 shrink-0">
-              <span class="text-[9px] uppercase font-bold text-slate-400 mb-1">Aperçu</span>
+        <!-- Customisation Complète de l'Avatar -->
+        <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-pink-400 uppercase tracking-wider flex items-center">
+              <i data-lucide="palette" class="w-3.5 h-3.5 mr-1.5 text-pink-400"></i>
+              Style de ton danseur
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+            <div class="sm:col-span-4 flex flex-col items-center justify-center bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
+              <span class="text-[9px] uppercase font-bold text-slate-400 mb-1">Aperçu en direct</span>
               <canvas id="avatar-preview-canvas" width="100" height="110" class="rounded-xl"></canvas>
             </div>
             
-            <div class="flex-1 space-y-2 min-w-0">
+            <div class="sm:col-span-8 space-y-2">
               <div>
                 <span class="text-[10px] text-slate-400 block mb-1">Teint de peau</span>
                 <div class="flex flex-wrap gap-1.5" id="skin-tones-container"></div>
@@ -491,14 +518,18 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-slate-800/80">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-800/80">
             <div>
-              <span class="text-[10px] text-slate-400 block mb-1">Coupe</span>
-              <div class="grid grid-cols-4 gap-1" id="hairstyles-container"></div>
+              <span class="text-[10px] text-slate-400 block mb-1">Coupe de cheveux</span>
+              <div class="grid grid-cols-2 gap-1" id="hairstyles-container"></div>
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-400 block mb-1">Couleur des cheveux</span>
+              <div class="flex flex-wrap gap-1.5" id="hair-colors-container"></div>
             </div>
             <div>
               <span class="text-[10px] text-slate-400 block mb-1">Accessoire</span>
-              <div class="grid grid-cols-4 gap-1" id="accessories-container"></div>
+              <div class="grid grid-cols-2 gap-1" id="accessories-container"></div>
             </div>
           </div>
         </div>
@@ -511,7 +542,7 @@
         </button>
         <button id="btn-save-account" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:opacity-90 text-white font-bold text-xs shadow transition flex items-center justify-center space-x-1.5">
           <i data-lucide="check" class="w-4 h-4"></i>
-          <span>Enregistrer</span>
+          <span>Enregistrer les modifications</span>
         </button>
       </div>
     </div>
@@ -538,20 +569,20 @@
     let myUserId = 'user_' + Math.random().toString(36).substr(2, 9);
 
     const PALETTES = {
-      skins: ['#fcd34d', '#fed7aa', '#fbcfe8', '#d97706', '#92400e', '#78350f'],
-      outfits: ['#a855f7', '#ec4899', '#06b6d4', '#10b981', '#f59e0b', '#3b82f6', '#f8fafc'],
-      hairs: ['#0f172a', '#f59e0b', '#ef4444', '#ec4899', '#38bdf8', '#10b981'],
+      skins: ['#fcd34d', '#fed7aa', '#fbcfe8', '#d97706', '#92400e', '#78350f', '#818cf8'],
+      outfits: ['#a855f7', '#ec4899', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#f8fafc', '#334155'],
+      hairs: ['#0f172a', '#f59e0b', '#ef4444', '#ec4899', '#38bdf8', '#10b981', '#f8fafc', '#a855f7'],
       hairstyles: [
         { id: 'short', label: 'Court' },
-        { id: 'messy', label: 'Cool' },
+        { id: 'messy', label: 'Ébouriffé' },
         { id: 'cap', label: 'Casquette' },
         { id: 'afro', label: 'Afro' }
       ],
       accessories: [
         { id: 'none', label: 'Aucun' },
-        { id: 'glowstick', label: 'Bâton' },
-        { id: 'shades', label: 'Lunettes' },
-        { id: 'headphones', label: 'Casque' }
+        { id: 'glowstick', label: 'Bâton Fluo' },
+        { id: 'shades', label: 'Lunettes VIP' },
+        { id: 'headphones', label: 'Casque DJ' }
       ]
     };
 
@@ -625,7 +656,241 @@
     }
     window.addEventListener('resize', resizeCanvas);
 
-    // ================= BASCULE D'ONGLETS SÉCURISÉE =================
+    // ================= DESSIN DE L'AVATAR (PRÉVISUALISATION EXACTE) =================
+    function drawAvatarStatic(canvasEl, person) {
+      if (!canvasEl) return;
+      const pCtx = canvasEl.getContext('2d');
+      const cw = canvasEl.width;
+      const ch = canvasEl.height;
+      pCtx.clearRect(0, 0, cw, ch);
+
+      pCtx.save();
+      const cx = cw / 2;
+      const cy = ch * 0.58;
+      const scale = Math.min(cw / 80, ch / 95);
+      pCtx.translate(cx, cy);
+      pCtx.scale(scale, scale);
+
+      // Ombre
+      pCtx.fillStyle = 'rgba(0,0,0,0.35)';
+      pCtx.beginPath();
+      pCtx.ellipse(0, 22, 14, 5, 0, 0, Math.PI * 2);
+      pCtx.fill();
+
+      // Pantalon
+      pCtx.fillStyle = '#1e293b';
+      pCtx.fillRect(-6, 9, 4, 13);
+      pCtx.fillRect(2, 9, 4, 13);
+
+      // Tenue / Haut
+      pCtx.fillStyle = person.outfitColor || '#a855f7';
+      pCtx.beginPath();
+      pCtx.roundRect ? pCtx.roundRect(-9, -2, 18, 15, 4) : pCtx.rect(-9, -2, 18, 15);
+      pCtx.fill();
+
+      // Bras
+      pCtx.strokeStyle = person.skinColor || '#fed7aa';
+      pCtx.lineWidth = 3.2;
+      pCtx.lineCap = 'round';
+      pCtx.beginPath();
+      pCtx.moveTo(-9, 2);
+      pCtx.lineTo(-14, 8);
+      pCtx.moveTo(9, 2);
+      pCtx.lineTo(14, 8);
+      pCtx.stroke();
+
+      // Tête
+      pCtx.fillStyle = person.skinColor || '#fed7aa';
+      pCtx.beginPath();
+      pCtx.arc(0, -11, 10, 0, Math.PI * 2);
+      pCtx.fill();
+
+      // Yeux ou Lunettes VIP
+      if (person.accessory === 'shades') {
+        pCtx.fillStyle = '#0f172a';
+        pCtx.fillRect(-7, -14, 14, 5);
+      } else {
+        pCtx.fillStyle = '#09090b';
+        pCtx.beginPath();
+        pCtx.arc(-3, -11, 1.5, 0, Math.PI * 2);
+        pCtx.arc(3, -11, 1.5, 0, Math.PI * 2);
+        pCtx.fill();
+      }
+
+      // Coupe de cheveux
+      pCtx.fillStyle = person.hairColor || '#0f172a';
+      if (person.hairStyle === 'messy') {
+        pCtx.beginPath();
+        pCtx.arc(0, -15, 10, Math.PI, Math.PI * 2);
+        pCtx.lineTo(10, -11);
+        pCtx.lineTo(-10, -11);
+        pCtx.fill();
+      } else if (person.hairStyle === 'afro') {
+        pCtx.beginPath();
+        pCtx.arc(0, -15, 13, 0, Math.PI * 2);
+        pCtx.fill();
+        pCtx.fillStyle = person.skinColor || '#fed7aa';
+        pCtx.beginPath();
+        pCtx.arc(0, -11, 8.5, 0, Math.PI * 2);
+        pCtx.fill();
+        if (person.accessory === 'shades') {
+          pCtx.fillStyle = '#0f172a';
+          pCtx.fillRect(-7, -14, 14, 5);
+        } else {
+          pCtx.fillStyle = '#09090b';
+          pCtx.beginPath();
+          pCtx.arc(-3, -11, 1.5, 0, Math.PI * 2);
+          pCtx.arc(3, -11, 1.5, 0, Math.PI * 2);
+          pCtx.fill();
+        }
+      } else if (person.hairStyle === 'cap') {
+        pCtx.beginPath();
+        pCtx.arc(0, -15, 10, Math.PI, Math.PI * 2);
+        pCtx.fill();
+        pCtx.fillRect(-4, -16, 17, 3.5);
+      } else {
+        pCtx.fillRect(-8, -19, 16, 6);
+      }
+
+      // Accessoires (Bâton fluo ou Casque DJ)
+      if (person.accessory === 'glowstick') {
+        pCtx.strokeStyle = '#00f2fe';
+        pCtx.lineWidth = 3;
+        pCtx.beginPath();
+        pCtx.moveTo(14, 8);
+        pCtx.lineTo(22, 1);
+        pCtx.stroke();
+      } else if (person.accessory === 'headphones') {
+        pCtx.strokeStyle = '#f59e0b';
+        pCtx.lineWidth = 3;
+        pCtx.beginPath();
+        pCtx.arc(0, -12, 12, Math.PI * 0.9, Math.PI * 2.1);
+        pCtx.stroke();
+        pCtx.fillStyle = '#111';
+        pCtx.fillRect(-12, -16, 3.5, 7);
+        pCtx.fillRect(8.5, -16, 3.5, 7);
+      }
+
+      pCtx.restore();
+    }
+
+    function renderAllAvatarPreviews() {
+      drawAvatarStatic(document.getElementById('entrance-avatar-preview'), state.user);
+      drawAvatarStatic(document.getElementById('avatar-preview-canvas'), state.user);
+    }
+
+    // ================= CONSTRUCTEUR DES PALETTES DE PERSONNALISATION =================
+    function buildCustomizerPalette(prefix) {
+      const isEntrance = (prefix === 'entrance');
+      const skinCont = document.getElementById(isEntrance ? 'entrance-skin-container' : 'skin-tones-container');
+      const outfitCont = document.getElementById(isEntrance ? 'entrance-outfit-container' : 'outfit-colors-container');
+      const hairStyleCont = document.getElementById(isEntrance ? 'entrance-hairstyles-container' : 'hairstyles-container');
+      const hairColorCont = document.getElementById(isEntrance ? 'entrance-haircolor-container' : 'hair-colors-container');
+      const accCont = document.getElementById(isEntrance ? 'entrance-accessories-container' : 'accessories-container');
+
+      // 1. Teint de peau
+      if (skinCont) {
+        skinCont.innerHTML = '';
+        PALETTES.skins.forEach(c => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const active = state.user.skinColor === c;
+          btn.className = `w-6 h-6 rounded-full border-2 transition ${active ? 'border-white scale-110 shadow' : 'border-transparent'}`;
+          btn.style.backgroundColor = c;
+          btn.addEventListener('click', () => {
+            state.user.skinColor = c;
+            buildCustomizerPalette('entrance');
+            buildCustomizerPalette('account');
+            renderAllAvatarPreviews();
+          });
+          skinCont.appendChild(btn);
+        });
+      }
+
+      // 2. Tenue
+      if (outfitCont) {
+        outfitCont.innerHTML = '';
+        PALETTES.outfits.forEach(c => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const active = state.user.outfitColor === c;
+          btn.className = `w-6 h-6 rounded-full border-2 transition ${active ? 'border-white scale-110 shadow' : 'border-transparent'}`;
+          btn.style.backgroundColor = c;
+          btn.addEventListener('click', () => {
+            state.user.outfitColor = c;
+            buildCustomizerPalette('entrance');
+            buildCustomizerPalette('account');
+            renderAllAvatarPreviews();
+          });
+          outfitCont.appendChild(btn);
+        });
+      }
+
+      // 3. Coupes de cheveux
+      if (hairStyleCont) {
+        hairStyleCont.innerHTML = '';
+        PALETTES.hairstyles.forEach(h => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const active = state.user.hairStyle === h.id;
+          btn.className = `py-1.5 px-2 rounded-lg text-[10px] font-semibold border transition ${active ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-300'}`;
+          btn.innerText = h.label;
+          btn.addEventListener('click', () => {
+            state.user.hairStyle = h.id;
+            buildCustomizerPalette('entrance');
+            buildCustomizerPalette('account');
+            renderAllAvatarPreviews();
+          });
+          hairStyleCont.appendChild(btn);
+        });
+      }
+
+      // 4. Couleur des cheveux
+      if (hairColorCont) {
+        hairColorCont.innerHTML = '';
+        PALETTES.hairs.forEach(c => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const active = state.user.hairColor === c;
+          btn.className = `w-6 h-6 rounded-full border-2 transition ${active ? 'border-white scale-110 shadow' : 'border-transparent'}`;
+          btn.style.backgroundColor = c;
+          btn.addEventListener('click', () => {
+            state.user.hairColor = c;
+            buildCustomizerPalette('entrance');
+            buildCustomizerPalette('account');
+            renderAllAvatarPreviews();
+          });
+          hairColorCont.appendChild(btn);
+        });
+      }
+
+      // 5. Accessoires
+      if (accCont) {
+        accCont.innerHTML = '';
+        PALETTES.accessories.forEach(a => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const active = state.user.accessory === a.id;
+          btn.className = `py-1.5 px-2 rounded-lg text-[10px] font-semibold border transition ${active ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-300'}`;
+          btn.innerText = a.label;
+          btn.addEventListener('click', () => {
+            state.user.accessory = a.id;
+            buildCustomizerPalette('entrance');
+            buildCustomizerPalette('account');
+            renderAllAvatarPreviews();
+          });
+          accCont.appendChild(btn);
+        });
+      }
+    }
+
+    function setupAvatarCustomizer() {
+      buildCustomizerPalette('entrance');
+      buildCustomizerPalette('account');
+      renderAllAvatarPreviews();
+    }
+
+    // ================= BASCULE D'ONGLETS =================
     window.switchEntranceTab = function(tab) {
       const tabChoose = document.getElementById('tab-choose-profile');
       const tabCreate = document.getElementById('tab-create-profile');
@@ -639,7 +904,7 @@
         tabChoose.className = 'py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 cursor-pointer transition';
         panelCreate.classList.remove('hidden');
         panelChoose.classList.add('hidden');
-        renderEntranceAvatarMini();
+        setupAvatarCustomizer();
       } else {
         tabChoose.className = 'py-2.5 rounded-xl bg-purple-600 text-white border border-purple-500 shadow cursor-pointer transition';
         tabCreate.className = 'py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 cursor-pointer transition';
@@ -648,7 +913,7 @@
       }
     };
 
-    // ================= RECHERCHE DEEZER EN DIRECT =================
+    // ================= RECHERCHE DEEZER DIRECTE =================
     function searchDeezer(query) {
       return new Promise((resolve) => {
         const callbackName = 'deezerCb_' + Math.floor(Math.random() * 1000000);
@@ -745,7 +1010,7 @@
       lucide.createIcons();
     }
 
-    // ================= FILE SYNCHRONISÉE =================
+    // ================= FILE PARTAGÉE =================
     async function addTrackToSharedQueue(track) {
       state.queue.push(track);
       renderQueueList();
@@ -1066,74 +1331,6 @@
       lucide.createIcons();
     }
 
-    function renderEntranceAvatarMini() {
-      const pCanvas = document.getElementById('entrance-avatar-preview');
-      if (!pCanvas) return;
-      const pCtx = pCanvas.getContext('2d');
-      pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-
-      pCtx.save();
-      pCtx.translate(30, 46);
-
-      pCtx.fillStyle = 'rgba(0,0,0,0.3)';
-      pCtx.beginPath();
-      pCtx.ellipse(0, 16, 12, 3, 0, 0, Math.PI * 2);
-      pCtx.fill();
-
-      pCtx.fillStyle = state.user.outfitColor || '#a855f7';
-      pCtx.fillRect(-7, -2, 14, 13);
-
-      pCtx.fillStyle = state.user.skinColor || '#fed7aa';
-      pCtx.beginPath();
-      pCtx.arc(0, -9, 8, 0, Math.PI * 2);
-      pCtx.fill();
-
-      pCtx.fillStyle = state.user.hairColor || '#0f172a';
-      pCtx.fillRect(-7, -17, 14, 6);
-
-      pCtx.restore();
-    }
-
-    function setupEntranceControls() {
-      const skinCont = document.getElementById('entrance-skin-container');
-      if (skinCont) {
-        skinCont.innerHTML = '';
-        PALETTES.skins.forEach(c => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `w-5 h-5 rounded-full border shrink-0 ${state.user.skinColor === c ? 'border-white scale-110 shadow' : 'border-transparent'}`;
-          btn.style.backgroundColor = c;
-          btn.addEventListener('click', () => {
-            state.user.skinColor = c;
-            skinCont.querySelectorAll('button').forEach(b => b.className = 'w-5 h-5 rounded-full border shrink-0 border-transparent');
-            btn.className = 'w-5 h-5 rounded-full border shrink-0 border-white scale-110 shadow';
-            renderEntranceAvatarMini();
-          });
-          skinCont.appendChild(btn);
-        });
-      }
-
-      const outfitCont = document.getElementById('entrance-outfit-container');
-      if (outfitCont) {
-        outfitCont.innerHTML = '';
-        PALETTES.outfits.forEach(c => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `w-5 h-5 rounded-full border shrink-0 ${state.user.outfitColor === c ? 'border-white scale-110 shadow' : 'border-transparent'}`;
-          btn.style.backgroundColor = c;
-          btn.addEventListener('click', () => {
-            state.user.outfitColor = c;
-            outfitCont.querySelectorAll('button').forEach(b => b.className = 'w-5 h-5 rounded-full border shrink-0 border-transparent');
-            btn.className = 'w-5 h-5 rounded-full border shrink-0 border-white scale-110 shadow';
-            renderEntranceAvatarMini();
-          });
-          outfitCont.appendChild(btn);
-        });
-      }
-
-      renderEntranceAvatarMini();
-    }
-
     async function broadcastPresence() {
       if (!db || !state.isAccountSelected) return;
       try {
@@ -1191,7 +1388,7 @@
         }
       } catch(e) {}
 
-      setupEntranceControls();
+      setupAvatarCustomizer();
       renderEntranceProfilesList();
 
       try {
@@ -1281,110 +1478,6 @@
       if (inputEmail) inputEmail.value = state.user.email;
     }
 
-    function renderAvatarPreview() {
-      const pCanvas = document.getElementById('avatar-preview-canvas');
-      if (!pCanvas) return;
-      const pCtx = pCanvas.getContext('2d');
-      pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-      
-      pCtx.save();
-      pCtx.translate(50, 70);
-      
-      pCtx.fillStyle = 'rgba(0,0,0,0.4)';
-      pCtx.beginPath();
-      pCtx.ellipse(0, 22, 16, 5, 0, 0, Math.PI * 2);
-      pCtx.fill();
-      
-      pCtx.fillStyle = '#1e293b';
-      pCtx.fillRect(-6, 10, 4, 13);
-      pCtx.fillRect(2, 10, 4, 13);
-      
-      pCtx.fillStyle = state.user.outfitColor;
-      pCtx.beginPath();
-      pCtx.roundRect ? pCtx.roundRect(-10, -2, 20, 16, 4) : pCtx.rect(-10, -2, 20, 16);
-      pCtx.fill();
-      
-      pCtx.fillStyle = state.user.skinColor;
-      pCtx.beginPath();
-      pCtx.arc(0, -12, 11, 0, Math.PI * 2);
-      pCtx.fill();
-      
-      pCtx.fillStyle = state.user.hairColor;
-      pCtx.fillRect(-10, -21, 20, 7);
-      
-      pCtx.restore();
-    }
-
-    function setupAvatarCustomizer() {
-      const skinCont = document.getElementById('skin-tones-container');
-      if (skinCont) {
-        skinCont.innerHTML = '';
-        PALETTES.skins.forEach(c => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `w-6 h-6 rounded-full border-2 transition ${state.user.skinColor === c ? 'border-white scale-110 shadow' : 'border-transparent'}`;
-          btn.style.backgroundColor = c;
-          btn.addEventListener('click', () => {
-            state.user.skinColor = c;
-            setupAvatarCustomizer();
-          });
-          skinCont.appendChild(btn);
-        });
-      }
-
-      const outfitCont = document.getElementById('outfit-colors-container');
-      if (outfitCont) {
-        outfitCont.innerHTML = '';
-        PALETTES.outfits.forEach(c => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `w-6 h-6 rounded-full border-2 transition ${state.user.outfitColor === c ? 'border-white scale-110 shadow' : 'border-transparent'}`;
-          btn.style.backgroundColor = c;
-          btn.addEventListener('click', () => {
-            state.user.outfitColor = c;
-            setupAvatarCustomizer();
-          });
-          outfitCont.appendChild(btn);
-        });
-      }
-
-      const hairStylesCont = document.getElementById('hairstyles-container');
-      if (hairStylesCont) {
-        hairStylesCont.innerHTML = '';
-        PALETTES.hairstyles.forEach(h => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          const active = state.user.hairStyle === h.id;
-          btn.className = `py-1 px-1.5 rounded-lg text-[10px] font-semibold border transition ${active ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-300'}`;
-          btn.innerText = h.label;
-          btn.addEventListener('click', () => {
-            state.user.hairStyle = h.id;
-            setupAvatarCustomizer();
-          });
-          hairStylesCont.appendChild(btn);
-        });
-      }
-
-      const accCont = document.getElementById('accessories-container');
-      if (accCont) {
-        accCont.innerHTML = '';
-        PALETTES.accessories.forEach(a => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          const active = state.user.accessory === a.id;
-          btn.className = `py-1 px-1.5 rounded-lg text-[10px] font-semibold border transition ${active ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-300'}`;
-          btn.innerText = a.label;
-          btn.addEventListener('click', () => {
-            state.user.accessory = a.id;
-            setupAvatarCustomizer();
-          });
-          accCont.appendChild(btn);
-        });
-      }
-
-      renderAvatarPreview();
-    }
-
     function setupModalsAndControls() {
       document.getElementById('btn-toggle-speaker-mode')?.addEventListener('click', () => {
         setSpeakerHostMode(!state.isSpeakerHost);
@@ -1450,7 +1543,7 @@
         broadcastPresence();
 
         if (modalAccount) modalAccount.classList.add('hidden');
-        showToast("✓ Profil enregistré !");
+        showToast("✓ Profil enregistré avec succès !");
       });
 
       const modalQueue = document.getElementById('modal-queue');
@@ -1551,7 +1644,7 @@
       }, 3500);
     }
 
-    // ================= DESSIN ET ANIMATION DU CLUB =================
+    // ================= DESSIN ET ANIMATIONS DU CLUB =================
     let frameCount = 0;
     const softSpotlights = [
       { angle: 0.2, speed: 0.004, color: 'rgba(168, 85, 247, 0.07)' },
@@ -1752,7 +1845,13 @@
       }
 
       ctx.fillStyle = person.hairColor || '#0f172a';
-      if (person.hairStyle === 'afro') {
+      if (person.hairStyle === 'messy') {
+        ctx.beginPath();
+        ctx.arc(0, -14, 9, Math.PI, Math.PI * 2);
+        ctx.lineTo(9, -11);
+        ctx.lineTo(-9, -11);
+        ctx.fill();
+      } else if (person.hairStyle === 'afro') {
         ctx.beginPath();
         ctx.arc(0, -13, 11, 0, Math.PI * 2);
         ctx.fill();
@@ -1760,16 +1859,41 @@
         ctx.beginPath();
         ctx.arc(0, -9, 7.5, 0, Math.PI * 2);
         ctx.fill();
+        if (person.accessory === 'shades') {
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(-6, -12, 12, 3.5);
+        } else {
+          ctx.fillStyle = '#09090b';
+          ctx.beginPath();
+          ctx.arc(-2.5, -10, 1.2, 0, Math.PI * 2);
+          ctx.arc(2.5, -10, 1.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (person.hairStyle === 'cap') {
+        ctx.beginPath();
+        ctx.arc(0, -14, 9, Math.PI, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(-3, -15, 14, 3);
       } else {
         ctx.fillRect(-7, -17, 14, 5);
       }
 
-      if (person.accessory === 'headphones' || isCurrentDjOnStage) {
+      if (person.accessory === 'glowstick') {
+        ctx.strokeStyle = '#00f2fe';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(12, -3 - armSwing);
+        ctx.lineTo(19, -9 - armSwing);
+        ctx.stroke();
+      } else if (person.accessory === 'headphones' || isCurrentDjOnStage) {
         ctx.strokeStyle = '#a855f7';
         ctx.lineWidth = 2.2;
         ctx.beginPath();
         ctx.arc(0, -11, 10, Math.PI * 0.9, Math.PI * 2.1);
         ctx.stroke();
+        ctx.fillStyle = '#111';
+        ctx.fillRect(-10, -14, 3, 5);
+        ctx.fillRect(7, -14, 3, 5);
       }
 
       ctx.restore();
@@ -1887,7 +2011,6 @@
       state.user.targetY = Math.max(minFloorY, Math.min(maxFloorY, clickY));
     });
 
-    // Initialisation immédiate sans attendre l'événement window.load
     function startApp() {
       lucide.createIcons();
       resizeCanvas();

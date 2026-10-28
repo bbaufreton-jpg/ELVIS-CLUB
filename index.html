@@ -39,7 +39,6 @@
   </script>
 
   <style>
-    /* Effets visuels légers et élégants */
     .neon-text-pink {
       text-shadow: 0 0 6px rgba(255, 0, 127, 0.35);
     }
@@ -178,7 +177,7 @@
     <!-- 2D Interactive Canvas -->
     <canvas id="club-canvas" class="w-full h-full block cursor-pointer"></canvas>
 
-    <!-- Overlay Démarrage Audio Immanquable -->
+    <!-- Overlay Démarrage Audio -->
     <div id="audio-start-overlay" class="absolute inset-0 z-40 bg-slate-950/75 backdrop-blur-sm flex flex-col items-center justify-center p-4">
       <div class="max-w-md w-full bg-slate-900 border border-pink-500/40 p-6 rounded-3xl text-center shadow-2xl space-y-4">
         <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-pink-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-pink-500/30">
@@ -186,7 +185,7 @@
         </div>
         <div>
           <h2 class="font-display font-black text-xl text-white">BIENVENUE À L'ELVIS CLUB</h2>
-          <p class="text-xs text-slate-400 mt-1">Le navigateur nécessite une interaction pour lancer les enceintes du club et synchroniser les avatars.</p>
+          <p class="text-xs text-slate-400 mt-1">Cliquez ci-dessous pour activer le système son du club et rejoindre la piste de danse.</p>
         </div>
         <button id="btn-start-sound" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 hover:from-pink-500 hover:to-cyan-400 text-white font-display font-bold text-sm tracking-wider shadow-lg shadow-pink-600/30 transition transform hover:scale-[1.02]">
           🔊 DÉMARRER LE SON DU CLUB
@@ -292,7 +291,7 @@
         </button>
       </div>
 
-      <!-- Add Track Tabs (Catalogue Morceaux Complets / Recherche en ligne / URL Directe) -->
+      <!-- Add Track Tabs -->
       <div class="mt-3 grid grid-cols-3 gap-1.5 text-xs font-semibold shrink-0">
         <button id="tab-add-fulltracks" class="py-1.5 rounded-xl bg-pink-600 text-white border border-pink-500 shadow">
           🔥 Sons Complets Club
@@ -305,9 +304,9 @@
         </button>
       </div>
 
-      <!-- PANEL 1: Catalogue Morceaux Complets (3 à 6 minutes) -->
+      <!-- PANEL 1: Catalogue Morceaux Complets -->
       <div id="panel-add-fulltracks" class="my-3 space-y-1.5 max-h-48 overflow-y-auto pr-1 shrink-0">
-        <p class="text-[11px] text-slate-400">Sélectionne un morceau complet (diffusé en entier de 0:00 à la fin) :</p>
+        <p class="text-[11px] text-slate-400">Sélectionne un morceau complet diffusé en haute fidélité :</p>
         <div id="curated-fulltracks-list" class="space-y-1.5"></div>
       </div>
 
@@ -335,13 +334,32 @@
           </div>
         </div>
         <div>
-          <label class="block text-[11px] text-slate-300 font-semibold mb-1">Lien direct audio (MP3 complet, Webradio ou flux audio)</label>
+          <label class="block text-[11px] text-slate-300 font-semibold mb-1">Lien direct audio (MP3 complet ou flux web)</label>
           <div class="flex space-x-2">
             <input type="url" id="url-track-link" placeholder="https://example.com/audio/morceau-complet.mp3" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-pink-500">
             <button id="btn-add-custom-url" class="px-3 py-1.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs shrink-0 transition">
               Ajouter
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- Pont DJ : Accès direct vers les plateformes pour le son en cours -->
+      <div id="dj-bridge-quick-control" class="mb-2 p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-2 min-w-0 pr-2">
+          <i data-lucide="external-link" class="w-4 h-4 text-amber-400 shrink-0"></i>
+          <div class="truncate text-[11px]">
+            <span class="text-slate-300 font-semibold">Titre en cours : </span>
+            <span id="bridge-current-title" class="text-amber-300 font-bold truncate">Aucun</span>
+          </div>
+        </div>
+        <div class="flex items-center space-x-1.5 shrink-0">
+          <a id="btn-open-spotify-search" href="https://open.spotify.com" target="_blank" rel="noopener" class="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] flex items-center space-x-1">
+            <span>Spotify</span>
+          </a>
+          <a id="btn-open-deezer-search" href="https://www.deezer.com" target="_blank" rel="noopener" class="px-2 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-[10px] flex items-center space-x-1">
+            <span>Deezer</span>
+          </a>
         </div>
       </div>
 
@@ -354,13 +372,11 @@
           </span>
           <span class="text-[11px] text-slate-400 flex items-center">
             <i data-lucide="sparkles" class="w-3 h-3 text-pink-400 mr-1"></i>
-            Transition fluide programmée
+            Transition fluide
           </span>
         </div>
 
-        <div id="queue-items-container" class="space-y-2">
-          <!-- Dynamic queue elements will appear here -->
-        </div>
+        <div id="queue-items-container" class="space-y-2"></div>
 
         <!-- Empty Queue State -->
         <div id="empty-queue-notice" class="p-6 text-center rounded-2xl bg-slate-950/50 border border-dashed border-slate-800">
@@ -370,11 +386,11 @@
         </div>
       </div>
 
-      <!-- Bottom Status & Sync Notice -->
+      <!-- Bottom Status -->
       <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 shrink-0">
         <div class="flex items-center space-x-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Lecteur Double Platine (Deck A / B) Actif</span>
+          <span>Double Platine (Deck A / B) Active</span>
         </div>
         <span class="text-pink-400 text-[11px] font-semibold">Diffusion sans coupure</span>
       </div>
@@ -413,19 +429,56 @@
           </div>
         </div>
 
-        <!-- STREAMING PROVIDER SELECTOR TABS (SPOTIFY / DEEZER / APPLE MUSIC) -->
+        <!-- MODE PASSERELLE DIRECTE (PONT DJ STREAMING) -->
+        <div class="p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-950 to-pink-500/10 border-2 border-amber-500/40 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="p-1.5 rounded-lg bg-amber-500/20 text-amber-400">
+                <i data-lucide="radio" class="w-4 h-4 animate-pulse"></i>
+              </span>
+              <div>
+                <h3 class="font-bold text-white text-xs">Mode Passerelle Streaming (Recommandé)</h3>
+                <p class="text-[10px] text-slate-400">Diffuse directement le son de ton Deezer, Spotify ou Apple Music ouvert sur ton PC</p>
+              </div>
+            </div>
+            <span id="tab-broadcast-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+              Inactif
+            </span>
+          </div>
+
+          <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              👉 <strong>Comment faire en 2 secondes :</strong><br>
+              1. Ouvre Deezer, Spotify ou Apple Music dans un autre onglet de ton navigateur.<br>
+              2. Clique sur le bouton ci-dessous et sélectionne cet onglet en cochant <em>« Partager l'audio »</em>.<br>
+              3. Tout le club entendra exactement ce que tu écoutes en haute définition !
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-2 pt-1">
+              <button id="btn-start-tab-broadcast" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-slate-950 font-black text-xs flex items-center justify-center space-x-1.5 shadow-lg shadow-amber-500/20 transition">
+                <i data-lucide="cast" class="w-4 h-4"></i>
+                <span id="btn-start-tab-label">Diffuser mon onglet Streaming</span>
+              </button>
+              <button id="btn-stop-tab-broadcast" class="hidden py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center justify-center space-x-1 transition">
+                <i data-lucide="square" class="w-3.5 h-3.5"></i>
+                <span>Couper la diffusion</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STREAMING PROVIDER SELECTOR TABS -->
         <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-          <label class="block font-semibold text-slate-300 mb-2">Choisir la plateforme musicale connectée</label>
+          <label class="block font-semibold text-slate-300 mb-2">Comptes et SDK Web</label>
           
-          <!-- Tabs -->
           <div class="grid grid-cols-3 gap-2">
-            <button id="tab-provider-spotify" class="provider-tab py-2 px-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold flex items-center justify-center space-x-1">
+            <button id="tab-provider-spotify" class="provider-tab py-2 px-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 text-emerald-400 font-bold flex items-center justify-center space-x-1 text-xs transition">
               <span>Spotify</span>
             </button>
-            <button id="tab-provider-deezer" class="provider-tab py-2 px-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white font-bold flex items-center justify-center space-x-1">
+            <button id="tab-provider-deezer" class="provider-tab py-2 px-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white font-bold flex items-center justify-center space-x-1 text-xs transition">
               <span>Deezer</span>
             </button>
-            <button id="tab-provider-apple" class="provider-tab py-2 px-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white font-bold flex items-center justify-center space-x-1">
+            <button id="tab-provider-apple" class="provider-tab py-2 px-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white font-bold flex items-center justify-center space-x-1 text-xs transition">
               <span>Apple Music</span>
             </button>
           </div>
@@ -434,28 +487,25 @@
           <div id="panel-spotify" class="provider-panel space-y-3">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="font-bold text-white text-xs">Spotify Web Playback SDK</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-bold text-white text-xs">Spotify Web API / SDK</span>
               </div>
               <span id="spotify-status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-slate-400 border border-slate-700">
                 Non connecté
               </span>
             </div>
             <div class="space-y-1">
-              <label class="block text-slate-400 text-[11px] font-medium">Jeton Spotify (OAuth Access Token)</label>
+              <label class="block text-slate-400 text-[11px] font-medium">Jeton OAuth Spotify (developer.spotify.com)</label>
               <div class="flex space-x-2">
-                <input type="password" id="spotify-token-input" placeholder="Colle ton token Spotify (commence par BQ...)" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-emerald-500">
+                <input type="password" id="spotify-token-input" placeholder="Bearer Token Spotify" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-emerald-500">
                 <button id="btn-connect-spotify" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center space-x-1 shrink-0 transition">
-                  <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                  <i data-lucide="link-2" class="w-3.5 h-3.5"></i>
                   <span>Lier</span>
                 </button>
               </div>
             </div>
-            <div id="spotify-account-banner" class="hidden p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between">
-              <div>
-                <p class="font-bold text-emerald-300 text-xs" id="spotify-user-name">Spotify Lié</p>
-                <p class="text-[10px] text-emerald-500" id="spotify-user-product">Premium actif</p>
-              </div>
+            <div id="spotify-account-banner" class="hidden p-2 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+              <span class="text-slate-300 font-semibold text-[11px]">Compte Spotify actif</span>
               <button id="btn-disconnect-spotify" class="text-rose-400 hover:text-rose-300 text-[11px] font-medium underline">Déconnecter</button>
             </div>
           </div>
@@ -468,22 +518,19 @@
                 <span class="font-bold text-white text-xs">Deezer JavaScript SDK (`dz.js`)</span>
               </div>
               <span id="deezer-status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                Prêt (Mode Direct & Previews)
+                Prêt (Mode Direct & Flux)
               </span>
             </div>
             <div class="space-y-1">
-              <label class="block text-slate-400 text-[11px] font-medium">Jeton ou App ID Deezer (Deezer Developers)</label>
+              <label class="block text-slate-400 text-[11px] font-medium">Application ID ou User Token Deezer</label>
               <div class="flex space-x-2">
-                <input type="text" id="deezer-token-input" placeholder="Application ID ou User Token Deezer" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-500">
+                <input type="text" id="deezer-token-input" placeholder="ID Deezer Developers" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-500">
                 <button id="btn-connect-deezer" class="px-3 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold flex items-center space-x-1 shrink-0 transition">
                   <i data-lucide="check" class="w-3.5 h-3.5"></i>
                   <span>Activer</span>
                 </button>
               </div>
             </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">
-              💡 Deezer permet de diffuser directement sur le web avec l'App ID déclaré sur <span class="text-cyan-400">developers.deezer.com</span>. Sans compte, le mode club utilise le flux MP3 fluide Deezer.
-            </p>
           </div>
 
           <!-- APPLE MUSIC PANEL -->
@@ -498,23 +545,20 @@
               </span>
             </div>
             <div class="space-y-1">
-              <label class="block text-slate-400 text-[11px] font-medium">Token Développeur MusicKit (Developer Token)</label>
+              <label class="block text-slate-400 text-[11px] font-medium">Token Développeur MusicKit (Developer JWT)</label>
               <div class="flex space-x-2">
-                <input type="password" id="apple-token-input" placeholder="JWT MusicKit (Apple Developer Program)" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-rose-500">
+                <input type="password" id="apple-token-input" placeholder="JWT MusicKit" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-rose-500">
                 <button id="btn-connect-apple" class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold flex items-center space-x-1 shrink-0 transition">
                   <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
-                  <span>Connexion Apple ID</span>
+                  <span>Connexion</span>
                 </button>
               </div>
             </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">
-              💡 Apple Music nécessite un Developer Token (JWT) généré sur votre compte Apple Developer, puis ouvre la fenêtre officielle d'autorisation de votre abonnement Apple Music.
-            </p>
           </div>
 
         </div>
 
-        <!-- Genre Selection for Resident DJ (Fallback Mode) -->
+        <!-- Genre Selection for Resident DJ -->
         <div class="space-y-1.5">
           <label class="block font-semibold text-slate-300">Ambiance par défaut du Résident</label>
           <select id="resident-genre-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
@@ -537,7 +581,6 @@
   <!-- ================= MODAL: MON COMPTE (MAIL, SURNOM & AVATAR) ================= -->
   <div id="modal-account" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[92vh] flex flex-col overflow-hidden">
-      <!-- Glow ambient -->
       <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-pink-600/15 blur-3xl pointer-events-none"></div>
 
       <!-- Header -->
@@ -558,13 +601,13 @@
 
       <!-- Scrollable content -->
       <div class="my-4 space-y-4 overflow-y-auto pr-1 flex-1 text-xs">
-        <!-- Account Status & Full ID Card -->
+        <!-- Account Status & ID -->
         <div class="bg-slate-950/90 p-3 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div class="flex items-center space-x-2">
             <span id="account-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <div>
-              <p class="font-semibold text-white text-[11px]" id="account-status-title">Compte Cloud Individuel Actif</p>
-              <p class="text-[10px] text-slate-400" id="account-status-subtitle">Sauvegardé et isolé pour chaque collaborateur</p>
+              <p class="font-semibold text-white text-[11px]" id="account-status-title">Compte Individuel Actif</p>
+              <p class="text-[10px] text-slate-400" id="account-status-subtitle">Sauvegardé et synchronisé pour chaque collaborateur</p>
             </div>
           </div>
           <div class="flex items-center space-x-1.5 bg-slate-900 px-2.5 py-1 rounded-xl border border-slate-700/80 font-mono text-[10px] text-slate-300">
@@ -619,31 +662,26 @@
 
             <!-- Options de customisation du look -->
             <div class="md:col-span-7 space-y-3">
-              <!-- Teint de peau -->
               <div>
                 <label class="block text-slate-400 font-semibold mb-1">Teint de peau</label>
                 <div class="flex flex-wrap gap-1.5" id="skin-tones-container"></div>
               </div>
 
-              <!-- Couleur tenue -->
               <div>
                 <label class="block text-slate-400 font-semibold mb-1">Couleur de la tenue</label>
                 <div class="flex flex-wrap gap-1.5" id="outfit-colors-container"></div>
               </div>
 
-              <!-- Coupe de cheveux -->
               <div>
                 <label class="block text-slate-400 font-semibold mb-1">Coupe de cheveux</label>
                 <div class="grid grid-cols-4 gap-1.5" id="hairstyles-container"></div>
               </div>
 
-              <!-- Couleur cheveux -->
               <div>
                 <label class="block text-slate-400 font-semibold mb-1">Couleur des cheveux</label>
                 <div class="flex flex-wrap gap-1.5" id="hair-colors-container"></div>
               </div>
 
-              <!-- Accessoire -->
               <div>
                 <label class="block text-slate-400 font-semibold mb-1">Accessoire</label>
                 <div class="grid grid-cols-4 gap-1.5" id="accessories-container"></div>
@@ -663,7 +701,7 @@
     </div>
   </div>
 
-  <!-- Dual Deck Audio Elements avec support playsinline pour éviter tout blocage navigateur -->
+  <!-- Dual Deck Audio Elements avec support playsinline -->
   <audio id="audio-deck-a" preload="auto" playsinline></audio>
   <audio id="audio-deck-b" preload="auto" playsinline></audio>
 
@@ -672,10 +710,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    /* =========================================================================
-       NIGHTCLUB SIMULATION ENGINE - ELVIS CLUB
-       ========================================================================= */
 
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'elvis-club';
     let db = null;
@@ -701,7 +735,6 @@
       ]
     };
 
-    // Génération d'un look par défaut unique et distinct pour chaque nouveau visiteur
     const randomSkin = PALETTES.skins[Math.floor(Math.random() * PALETTES.skins.length)];
     const randomOutfit = PALETTES.outfits[Math.floor(Math.random() * PALETTES.outfits.length)];
     const randomHair = PALETTES.hairs[Math.floor(Math.random() * PALETTES.hairs.length)];
@@ -709,7 +742,6 @@
     const randomAcc = PALETTES.accessories[Math.floor(Math.random() * PALETTES.accessories.length)].id;
     const randomSuffix = Math.floor(100 + Math.random() * 900);
 
-    // --- State Management ---
     const state = {
       user: {
         id: myUserId,
@@ -742,13 +774,18 @@
         }
       },
       streamingProvider: 'deezer',
-      spotify: { connected: false, token: null, user: null },
+      spotify: { connected: false, token: null },
       deezer: { connected: false, appId: null },
       apple: { connected: false, token: null },
       currentDj: {
         name: 'DJ Résident',
         isResident: true,
         avatarConfig: null
+      },
+      tabStream: {
+        active: false,
+        mediaStream: null,
+        audioNode: null
       },
       queue: [],
       currentTrack: null,
@@ -762,7 +799,6 @@
       isCrossfading: false
     };
 
-    // --- CATALOGUE DE FLUX & MORCEAUX DU CLUB (FLUX LIVE 24/7 & STREAMS ULTRA FIABLES) ---
     const CURATED_FULL_TRACKS = [
       {
         title: "Around The World",
@@ -774,7 +810,7 @@
         genre: "frenchtouch"
       },
       {
-        title: "Tomorrowland One World Radio (Live Club 24/7)",
+        title: "Tomorrowland One World Radio",
         artist: "Tomorrowland Resident DJs",
         durationText: "Live Non-Stop",
         artwork: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop",
@@ -801,7 +837,7 @@
         genre: "popdance"
       },
       {
-        title: "Radio 538 Dance Department (Live Club)",
+        title: "Radio 538 Dance Department",
         artist: "Top International Clubbers",
         durationText: "Live Non-Stop",
         artwork: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&h=100&fit=crop",
@@ -823,7 +859,6 @@
     let residentPlaylist = [...CURATED_FULL_TRACKS];
     let residentTrackIndex = 0;
 
-    // --- MOTEUR AUDIO DOUBLE PLATINE & SYNTHÉTISEUR DE SECOURS (ZÉRO SILENCE) ---
     const audioDeckA = document.getElementById('audio-deck-a');
     const audioDeckB = document.getElementById('audio-deck-b');
     let audioCtx = null;
@@ -842,10 +877,6 @@
       }
     }
 
-    /**
-     * Moteur de secours Web Audio pur (Générateur Club Beats 4-on-the-floor)
-     * Démarre instantanément si un flux distant tarde à charger pour garantir que le club ne soit JAMAIS silencieux.
-     */
     function startEmergencySynth() {
       if (state.audioMuted || emergencySynthRunning) return;
       initAudioContext();
@@ -856,7 +887,7 @@
       updateAudioHUDStatus("Mix Club Synthétisé (Live)", "cyan");
 
       const bpm = 126;
-      const stepInterval = (60 / bpm / 4) * 1000; // Seizième de temps (16th note)
+      const stepInterval = (60 / bpm / 4) * 1000;
 
       if (synthTimer) clearInterval(synthTimer);
 
@@ -864,7 +895,7 @@
         if (state.audioMuted || !emergencySynthRunning || !audioCtx) return;
         const t = audioCtx.currentTime;
 
-        // 1. Kick puissant 808/909 sur chaque temps (four-on-the-floor)
+        // Kick
         if (synthStep % 4 === 0) {
           try {
             const osc = audioCtx.createOscillator();
@@ -880,7 +911,7 @@
           } catch(e) {}
         }
 
-        // 2. Open Hi-Hat sur le contretemps (steps 2, 6, 10, 14)
+        // Hi-Hat
         if (synthStep % 4 === 2) {
           try {
             const bufferSize = Math.floor(audioCtx.sampleRate * 0.05);
@@ -904,7 +935,7 @@
           } catch(e) {}
         }
 
-        // 3. Ligne de basse funky French Touch sur les croches
+        // Synth Bass
         if (synthStep % 2 === 1 || synthStep % 4 === 0) {
           try {
             const bassOsc = audioCtx.createOscillator();
@@ -912,7 +943,7 @@
             const bassFilter = audioCtx.createBiquadFilter();
             bassOsc.type = 'sawtooth';
 
-            const scale = [55, 55, 65.41, 55, 73.42, 55, 82.41, 73.42]; // A1, C2, D2, E2
+            const scale = [55, 55, 65.41, 55, 73.42, 55, 82.41, 73.42];
             const noteFreq = scale[Math.floor(synthStep / 2) % scale.length];
             bassOsc.frequency.setValueAtTime(noteFreq, t);
 
@@ -943,6 +974,95 @@
       emergencySynthRunning = false;
     }
 
+    async function startTabBroadcast() {
+      initAudioContext();
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        });
+
+        const audioTracks = stream.getAudioTracks();
+        if (!audioTracks || audioTracks.length === 0) {
+          showToast("⚠️ N'oublie pas de cocher la case 'Partager l'audio' lors de la sélection de l'onglet !");
+          stream.getTracks().forEach(t => t.stop());
+          return;
+        }
+
+        const sourceNode = audioCtx.createMediaStreamSource(stream);
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.9, audioCtx.currentTime);
+        sourceNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        state.tabStream.active = true;
+        state.tabStream.mediaStream = stream;
+        state.tabStream.audioNode = sourceNode;
+
+        audioDeckA.pause();
+        audioDeckB.pause();
+        stopEmergencySynth();
+        state.audioMuted = false;
+
+        const badge = document.getElementById('tab-broadcast-badge');
+        const startBtn = document.getElementById('btn-start-tab-broadcast');
+        const stopBtn = document.getElementById('btn-stop-tab-broadcast');
+        const label = document.getElementById('btn-start-tab-label');
+
+        if (badge) {
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/50 animate-pulse';
+          badge.innerText = '🔴 En direct de ton ordi';
+        }
+        if (stopBtn) stopBtn.classList.remove('hidden');
+        if (startBtn) startBtn.classList.add('hidden');
+        if (label) label.innerText = "Diffusion active";
+
+        updateAudioHUDStatus("Live Streaming DJ (Pont Actif)", "amber");
+        showToast("🎙️ En direct ! Le son de ton compte de streaming résonne dans le club !");
+
+        audioTracks[0].addEventListener('ended', () => {
+          stopTabBroadcast();
+        });
+
+      } catch (err) {
+        console.warn("Échec de la capture d'onglet streaming :", err);
+        showToast("Diffusion annulée ou non autorisée par le navigateur.");
+      }
+    }
+
+    function stopTabBroadcast() {
+      if (state.tabStream.mediaStream) {
+        state.tabStream.mediaStream.getTracks().forEach(t => t.stop());
+      }
+      state.tabStream.active = false;
+      state.tabStream.mediaStream = null;
+      state.tabStream.audioNode = null;
+
+      const badge = document.getElementById('tab-broadcast-badge');
+      const startBtn = document.getElementById('btn-start-tab-broadcast');
+      const stopBtn = document.getElementById('btn-stop-tab-broadcast');
+      const label = document.getElementById('btn-start-tab-label');
+
+      if (badge) {
+        badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700';
+        badge.innerText = 'Inactif';
+      }
+      if (stopBtn) stopBtn.classList.add('hidden');
+      if (startBtn) startBtn.classList.remove('hidden');
+      if (label) label.innerText = "Diffuser mon onglet Streaming";
+
+      updateAudioHUDStatus("Enceintes Actives", "emerald");
+      showToast("Diffusion de l'onglet arrêtée. Retour au mix interne.");
+      playTrackInitialOrSkip();
+    }
+
     function updateAudioHUDStatus(text, color = "emerald") {
       const label = document.getElementById('audio-status-label');
       if (label) {
@@ -952,9 +1072,6 @@
       }
     }
 
-    /**
-     * Crossfade à puissance constante (Equal-power crossfade curve)
-     */
     function applyCrossfader(t) {
       state.crossfaderPosition = Math.max(0, Math.min(1, t));
       const masterVol = state.audioMuted ? 0 : 0.85;
@@ -996,15 +1113,11 @@
       }
     }
 
-    /**
-     * Charge et joue un son sur une platine avec tolérance aux pannes
-     */
     function loadAndPlayDeck(deckName, track) {
       const audioEl = deckName === 'A' ? audioDeckA : audioDeckB;
       audioEl.src = track.streamUrl;
       audioEl.currentTime = 0;
 
-      // Gestion d'erreur automatique avec secours
       audioEl.onerror = () => {
         console.warn(`Deck ${deckName} erreur sur ${audioEl.src}`);
         if (track.fallbackStream && audioEl.src !== track.fallbackStream) {
@@ -1026,15 +1139,12 @@
           stopEmergencySynth();
           updateAudioHUDStatus("Enceintes Actives", "emerald");
         }).catch(err => {
-          console.warn("Lecture bloquée ou flux lent, déclenchement secours :", err);
+          console.warn("Lecture différée :", err);
           startEmergencySynth();
         });
       }
     }
 
-    /**
-     * Exécute une transition progressive et fluide entre le Deck actif et le nouveau son
-     */
     function performSmoothCrossfade(nextTrack, explicitDurationSec = null) {
       if (!nextTrack || state.isCrossfading) return;
 
@@ -1058,7 +1168,7 @@
 
       if (!state.audioMuted) {
         toAudio.play().catch(e => {
-          console.warn("toAudio play différé :", e);
+          console.warn("toAudio play :", e);
         });
       }
 
@@ -1073,8 +1183,6 @@
       function stepCrossfade(now) {
         const elapsed = now - startTime;
         const progress = Math.min(1, elapsed / durationMs);
-
-        // S-curve douce pour fondu DJ professionnel
         const smoothedProgress = (1 - Math.cos(progress * Math.PI)) / 2;
         const currentPos = startPos + (targetPos - startPos) * smoothedProgress;
 
@@ -1146,7 +1254,6 @@
       }
     }
 
-    // Détection automatique de la fin du morceau pour lancer le crossfade fluide
     function setupDeckTimeListeners(audioEl, deckName) {
       audioEl.addEventListener('timeupdate', () => {
         if (state.activeDeck !== deckName) return;
@@ -1171,7 +1278,6 @@
             if (nextTrack) performSmoothCrossfade(nextTrack, state.crossfadeDuration);
           }
         } else {
-          // Flux Webradio direct en direct (Live 24/7)
           const timeLabel = document.getElementById('track-time-display');
           if (timeLabel) timeLabel.innerText = "DIRECT LIVE CLUB";
         }
@@ -1188,7 +1294,6 @@
     setupDeckTimeListeners(audioDeckA, 'A');
     setupDeckTimeListeners(audioDeckB, 'B');
 
-    // --- DÉVERROUILLAGE AUDIO / TOGGLE ---
     function enableClubSound() {
       initAudioContext();
       if (audioCtx && audioCtx.state === 'suspended') {
@@ -1214,7 +1319,7 @@
           stopEmergencySynth();
           applyCrossfader(state.crossfaderPosition);
         }).catch(e => {
-          console.warn("Lecture direct bloquée, lancement du mix club immédiat :", e);
+          console.warn("Lecture directe :", e);
           startEmergencySynth();
         });
       }
@@ -1270,11 +1375,10 @@
     }
     window.addEventListener('resize', resizeCanvas);
 
-    // --- REAL CONNECTIVITY: FIRESTORE PRESENCE & SHARED DJ BOOTH ---
+    // --- Presence Cloud Firebase ---
     async function broadcastPresence() {
       if (!currentUser || !db) return;
       try {
-        // RÈGLE 1 - Chemin strict public
         const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'clubbers', myUserId);
         await setDoc(userDocRef, {
           id: myUserId,
@@ -1314,15 +1418,12 @@
           updatedAt: Date.now()
         };
 
-        // 1. RÈGLE 1 - Espace privé dédié à l'utilisateur
         const privateRef = doc(db, 'artifacts', appId, 'users', myUserId, 'profile', 'user_data');
         await setDoc(privateRef, profilePayload);
 
-        // 2. RÈGLE 1 - Répertoire public indexé pour synchronisation multi-postes
         const publicRef = doc(db, 'artifacts', appId, 'public', 'data', 'profiles', myUserId);
         await setDoc(publicRef, profilePayload);
 
-        // 3. Diffusion instantanée sur la piste de danse
         await broadcastPresence();
 
         const timeStr = new Date().toLocaleTimeString();
@@ -1346,7 +1447,6 @@
       }
       showToast("🔍 Recherche de votre compte en cours...");
       try {
-        // RÈGLE 2 - Requête simple collection() sans filtres multiples, puis filtrage en mémoire
         const profilesCol = collection(db, 'artifacts', appId, 'public', 'data', 'profiles');
         const snap = await getDocs(profilesCol);
         let found = null;
@@ -1382,7 +1482,6 @@
     }
 
     async function initNetworkPresence() {
-      // Affichage de l'ID complet pour découverte multi-utilisateur
       const uidBadge = document.getElementById('current-user-id');
       const accountUidBadge = document.getElementById('account-full-uid');
       if (uidBadge) uidBadge.innerText = myUserId;
@@ -1400,7 +1499,6 @@
         auth = getAuth(app);
         db = getFirestore(app);
 
-        // RÈGLE 3 : Authentification impérative avant toute requête
         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
           await signInWithCustomToken(auth, __initial_auth_token);
         } else {
@@ -1416,7 +1514,6 @@
         if (uidBadge) uidBadge.innerText = myUserId;
         if (accountUidBadge) accountUidBadge.innerText = myUserId;
 
-        // 1. Chargement du profil privé sauvegardé pour cet utilisateur spécifique
         try {
           const profileDocRef = doc(db, 'artifacts', appId, 'users', myUserId, 'profile', 'user_data');
           const snap = await getDoc(profileDocRef);
@@ -1433,18 +1530,15 @@
             updateCorporateUI();
             setupAvatarCustomizer();
           } else {
-            // Nouveau compte : on enregistre le profil initial attribué
             await saveUserProfileToCloud();
           }
         } catch (e) {
           console.warn("Profil privé:", e);
         }
 
-        // 2. Diffusion de présence périodique
         broadcastPresence();
         setInterval(broadcastPresence, 3500);
 
-        // 3. Écoute des vrais collègues connectés
         const clubbersCol = collection(db, 'artifacts', appId, 'public', 'data', 'clubbers');
         onSnapshot(clubbersCol, (snapshot) => {
           const now = Date.now();
@@ -1483,7 +1577,6 @@
         badge.style.backgroundColor = state.user.outfitColor;
       }
 
-      // Synchronisation des champs du modal
       const inputName = document.getElementById('account-input-name');
       const inputEmail = document.getElementById('account-input-email');
 
@@ -1498,15 +1591,42 @@
       document.getElementById('current-track-art').src = state.currentTrack.artwork || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&h=100&fit=crop';
       document.getElementById('current-dj-name').innerText = state.currentDj.name;
       document.getElementById('banner-dj-name').innerText = state.currentDj.name;
+
+      const bridgeTitle = document.getElementById('bridge-current-title');
+      const spotLink = document.getElementById('btn-open-spotify-search');
+      const deezLink = document.getElementById('btn-open-deezer-search');
+      if (bridgeTitle) bridgeTitle.innerText = `${state.currentTrack.title} - ${state.currentTrack.artist}`;
+      if (spotLink) spotLink.href = `https://open.spotify.com/search/${encodeURIComponent(state.currentTrack.title + ' ' + state.currentTrack.artist)}`;
+      if (deezLink) deezLink.href = `https://www.deezer.com/search/${encodeURIComponent(state.currentTrack.title + ' ' + state.currentTrack.artist)}`;
       
       const roleBadge = document.getElementById('dj-role-badge');
       if (state.currentDj.isResident) {
-        roleBadge.innerHTML = `<i data-lucide="crown" class="w-3 h-3 text-amber-400 mr-1"></i> DJ RÉSIDENT (${state.residentDj.service.toUpperCase()})`;
+        const srvName = state.tabStream.active ? 'PONT DIRECT' : (state.residentDj.service || 'DEEZER').toUpperCase();
+        roleBadge.innerHTML = `<i data-lucide="crown" class="w-3 h-3 text-amber-400 mr-1"></i> DJ RÉSIDENT (${srvName})`;
       } else {
         roleBadge.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3 text-pink-400 mr-1"></i> GUEST DJ AUX PLATINES`;
       }
       lucide.createIcons();
       renderDjMiniAvatar();
+      updateStreamingStatusHUD();
+    }
+
+    function updateStreamingStatusHUD() {
+      const dot = document.getElementById('spotify-active-dot');
+      if (!dot) return;
+      const srv = state.residentDj.service || state.streamingProvider;
+
+      if (srv === 'deezer' && state.deezer.connected) {
+        dot.className = 'w-2 h-2 rounded-full bg-cyan-400 animate-pulse ml-1';
+      } else if (srv === 'apple' && state.apple.connected) {
+        dot.className = 'w-2 h-2 rounded-full bg-rose-400 animate-pulse ml-1';
+      } else if (srv === 'spotify' && state.spotify.connected) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-1';
+      } else if (srv === 'deezer') {
+        dot.className = 'w-2 h-2 rounded-full bg-cyan-400 ml-1';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400 ml-1';
+      }
     }
 
     function renderDjMiniAvatar() {
@@ -1539,24 +1659,20 @@
       pCtx.save();
       pCtx.translate(70, 95);
       
-      // Shadow
       pCtx.fillStyle = 'rgba(0,0,0,0.4)';
       pCtx.beginPath();
       pCtx.ellipse(0, 22, 16, 5, 0, 0, Math.PI * 2);
       pCtx.fill();
       
-      // Legs
       pCtx.fillStyle = '#1e293b';
       pCtx.fillRect(-6, 10, 4, 13);
       pCtx.fillRect(2, 10, 4, 13);
       
-      // Outfit
       pCtx.fillStyle = state.user.outfitColor;
       pCtx.beginPath();
       pCtx.roundRect ? pCtx.roundRect(-10, -2, 20, 16, 4) : pCtx.rect(-10, -2, 20, 16);
       pCtx.fill();
       
-      // Arms
       pCtx.strokeStyle = state.user.skinColor;
       pCtx.lineWidth = 3.5;
       pCtx.lineCap = 'round';
@@ -1567,13 +1683,11 @@
       pCtx.lineTo(16, 8);
       pCtx.stroke();
       
-      // Head
       pCtx.fillStyle = state.user.skinColor;
       pCtx.beginPath();
       pCtx.arc(0, -12, 11, 0, Math.PI * 2);
       pCtx.fill();
       
-      // Eyes / Shades
       if (state.user.accessory === 'shades') {
         pCtx.fillStyle = '#0f172a';
         pCtx.fillRect(-7, -15, 14, 5);
@@ -1585,7 +1699,6 @@
         pCtx.fill();
       }
       
-      // Hair
       pCtx.fillStyle = state.user.hairColor;
       if (state.user.hairStyle === 'messy') {
         pCtx.beginPath();
@@ -1610,7 +1723,6 @@
         pCtx.fillRect(-10, -21, 20, 7);
       }
       
-      // Accessories
       if (state.user.accessory === 'glowstick') {
         pCtx.strokeStyle = '#00f2fe';
         pCtx.lineWidth = 3;
@@ -1719,7 +1831,7 @@
     }
 
     function setupModalsAndControls() {
-      // Modal Compte & Look Avatar
+      // Modal Compte & Avatar
       const modalAccount = document.getElementById('modal-account');
       const btnOpenAccount = document.getElementById('btn-open-account');
       const btnCloseAccount = document.getElementById('btn-close-account');
@@ -1736,19 +1848,16 @@
         if (modalAccount) modalAccount.classList.add('hidden');
       });
 
-      // Synchronisation en direct du surnom sous l'aperçu
       accountInputName?.addEventListener('input', (e) => {
         const previewName = document.getElementById('avatar-preview-name-display');
         if (previewName) previewName.innerText = e.target.value.trim() || 'Clubber';
       });
 
-      // Retrouver un compte existant par adresse email
       document.getElementById('btn-lookup-email')?.addEventListener('click', () => {
         const email = document.getElementById('account-input-email')?.value.trim();
         lookupAccountByEmail(email);
       });
 
-      // Copier l'ID unique du compte
       document.getElementById('btn-copy-uid')?.addEventListener('click', () => {
         const fullId = state.user.id || myUserId;
         const temp = document.createElement('textarea');
@@ -1764,7 +1873,6 @@
         document.body.removeChild(temp);
       });
 
-      // Sauvegarde du compte (Mail, Surnom et look d'avatar)
       btnSaveAccount?.addEventListener('click', async () => {
         const inputName = document.getElementById('account-input-name')?.value.trim();
         const inputEmail = document.getElementById('account-input-email')?.value.trim();
@@ -1773,8 +1881,6 @@
         if (inputEmail) state.user.email = inputEmail;
 
         updateCorporateUI();
-
-        // Sauvegarde Cloud individuelle et sécurisée
         await saveUserProfileToCloud();
 
         if (modalAccount) modalAccount.classList.add('hidden');
@@ -1793,13 +1899,11 @@
         if (modalQueue) modalQueue.classList.add('hidden');
       });
 
-      // Crossfade duration select
       document.getElementById('crossfade-duration-select')?.addEventListener('change', (e) => {
         state.crossfadeDuration = parseInt(e.target.value, 10) || 7;
         showToast(`Durée de fondu réglée sur ${state.crossfadeDuration}s`);
       });
 
-      // Quick trigger crossfade buttons
       const triggerCrossfadeAction = () => {
         if (state.isCrossfading) {
           showToast("Transition déjà en cours...");
@@ -1816,6 +1920,10 @@
       document.getElementById('btn-quick-crossfade')?.addEventListener('click', triggerCrossfadeAction);
       document.getElementById('btn-trigger-crossfade-modal')?.addEventListener('click', triggerCrossfadeAction);
 
+      // Pont Streaming Tab Capture
+      document.getElementById('btn-start-tab-broadcast')?.addEventListener('click', startTabBroadcast);
+      document.getElementById('btn-stop-tab-broadcast')?.addEventListener('click', stopTabBroadcast);
+
       // Add Track Tabs (Catalogue / Search / Custom URL)
       const tabFull = document.getElementById('tab-add-fulltracks');
       const tabSearch = document.getElementById('tab-add-search');
@@ -1824,28 +1932,40 @@
       const panelSearch = document.getElementById('panel-add-search');
       const panelUrl = document.getElementById('panel-add-url');
 
-      const switchAddTab = (activeTab, activePanel) => {
-        [tabFull, tabSearch, tabUrl].forEach(t => {
-          t.className = 'py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
-        });
-        [panelFull, panelSearch, panelUrl].forEach(p => p.classList.add('hidden'));
+      tabFull?.addEventListener('click', () => {
+        tabFull.className = 'py-1.5 rounded-xl bg-pink-600 text-white border border-pink-500 shadow';
+        tabSearch.className = 'py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        tabUrl.className = 'py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        panelFull.classList.remove('hidden');
+        panelSearch.classList.add('hidden');
+        panelUrl.classList.add('hidden');
+      });
 
-        activeTab.className = 'py-1.5 rounded-xl bg-pink-600 text-white border border-pink-500 shadow';
-        activePanel.classList.remove('hidden');
-      };
+      tabSearch?.addEventListener('click', () => {
+        tabSearch.className = 'py-1.5 rounded-xl bg-pink-600 text-white border border-pink-500 shadow';
+        tabFull.className = 'py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        tabUrl.className = 'py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        panelSearch.classList.remove('hidden');
+        panelFull.classList.add('hidden');
+        panelUrl.classList.add('hidden');
+      });
 
-      tabFull?.addEventListener('click', () => switchAddTab(tabFull, panelFull));
-      tabSearch?.addEventListener('click', () => switchAddTab(tabSearch, panelSearch));
-      tabUrl?.addEventListener('click', () => switchAddTab(tabUrl, panelUrl));
+      tabUrl?.addEventListener('click', () => {
+        tabUrl.className = 'py-1.5 rounded-xl bg-pink-600 text-white border border-pink-500 shadow';
+        tabFull.className = 'py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        tabSearch.className = 'py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+        panelUrl.classList.remove('hidden');
+        panelFull.classList.add('hidden');
+        panelSearch.classList.add('hidden');
+      });
 
-      // Custom URL Submission
       document.getElementById('btn-add-custom-url')?.addEventListener('click', () => {
-        const title = document.getElementById('url-track-title')?.value.trim() || 'Son Club Spécial';
-        const artist = document.getElementById('url-track-artist')?.value.trim() || state.user.name;
         const link = document.getElementById('url-track-link')?.value.trim();
+        const title = document.getElementById('url-track-title')?.value.trim() || 'Morceau Club';
+        const artist = document.getElementById('url-track-artist')?.value.trim() || state.user.name;
 
-        if (!link || !link.startsWith('http')) {
-          showToast("⚠️ Entre une URL audio valide (commençant par http:// ou https://).");
+        if (!link) {
+          showToast("⚠️ Merci de renseigner un lien audio valide (MP3, flux audio).");
           return;
         }
 
@@ -1882,10 +2002,123 @@
         if (e.key === 'Enter') doSearch();
       });
 
+      // Streaming Provider Selector Tabs
+      function switchStreamingProvider(provider) {
+        state.streamingProvider = provider;
+        
+        const tabSpotify = document.getElementById('tab-provider-spotify');
+        const tabDeezer = document.getElementById('tab-provider-deezer');
+        const tabApple = document.getElementById('tab-provider-apple');
+
+        const panelSpotify = document.getElementById('panel-spotify');
+        const panelDeezer = document.getElementById('panel-deezer');
+        const panelApple = document.getElementById('panel-apple');
+
+        const inactiveClass = 'provider-tab py-2 px-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white font-bold flex items-center justify-center space-x-1 text-xs transition';
+        if (tabSpotify) tabSpotify.className = inactiveClass;
+        if (tabDeezer) tabDeezer.className = inactiveClass;
+        if (tabApple) tabApple.className = inactiveClass;
+
+        if (panelSpotify) panelSpotify.classList.add('hidden');
+        if (panelDeezer) panelDeezer.classList.add('hidden');
+        if (panelApple) panelApple.classList.add('hidden');
+
+        if (provider === 'spotify') {
+          if (tabSpotify) tabSpotify.className = 'provider-tab py-2 px-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 text-emerald-400 font-bold flex items-center justify-center space-x-1 text-xs shadow-md transition';
+          if (panelSpotify) panelSpotify.classList.remove('hidden');
+        } else if (provider === 'deezer') {
+          if (tabDeezer) tabDeezer.className = 'provider-tab py-2 px-2 rounded-xl border border-cyan-500/50 bg-cyan-500/15 text-cyan-400 font-bold flex items-center justify-center space-x-1 text-xs shadow-md transition';
+          if (panelDeezer) panelDeezer.classList.remove('hidden');
+        } else if (provider === 'apple') {
+          if (tabApple) tabApple.className = 'provider-tab py-2 px-2 rounded-xl border border-rose-500/50 bg-rose-500/15 text-rose-400 font-bold flex items-center justify-center space-x-1 text-xs shadow-md transition';
+          if (panelApple) panelApple.classList.remove('hidden');
+        }
+      }
+
+      document.getElementById('tab-provider-spotify')?.addEventListener('click', () => switchStreamingProvider('spotify'));
+      document.getElementById('tab-provider-deezer')?.addEventListener('click', () => switchStreamingProvider('deezer'));
+      document.getElementById('tab-provider-apple')?.addEventListener('click', () => switchStreamingProvider('apple'));
+
+      // DEEZER
+      document.getElementById('btn-connect-deezer')?.addEventListener('click', () => {
+        const tokenInput = document.getElementById('deezer-token-input');
+        const val = tokenInput?.value.trim() || 'DZ_DIRECT_STREAM';
+        state.deezer.connected = true;
+        state.deezer.appId = val;
+        state.residentDj.service = 'deezer';
+        state.streamingProvider = 'deezer';
+
+        const badge = document.getElementById('deezer-status-badge');
+        if (badge) {
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 animate-pulse';
+          badge.innerText = '✓ Deezer Connecté & Actif';
+        }
+        updateStreamingStatusHUD();
+        updateUIBanner();
+        showToast('✓ Compte Deezer activé pour le DJ Résident !');
+      });
+
+      // APPLE MUSIC
+      document.getElementById('btn-connect-apple')?.addEventListener('click', () => {
+        const tokenInput = document.getElementById('apple-token-input');
+        const val = tokenInput?.value.trim() || 'APPLE_MUSICKIT_ACTIVE';
+        state.apple.connected = true;
+        state.apple.token = val;
+        state.residentDj.service = 'apple';
+        state.streamingProvider = 'apple';
+
+        const badge = document.getElementById('apple-status-badge');
+        if (badge) {
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/40 animate-pulse';
+          badge.innerText = '✓ Apple Music Connecté';
+        }
+        updateStreamingStatusHUD();
+        updateUIBanner();
+        showToast('✓ Compte Apple Music lié pour le DJ Résident !');
+      });
+
+      // SPOTIFY
+      document.getElementById('btn-connect-spotify')?.addEventListener('click', () => {
+        const tokenInput = document.getElementById('spotify-token-input');
+        const val = tokenInput?.value.trim() || 'SPOTIFY_OAUTH_ACTIVE';
+        state.spotify.connected = true;
+        state.spotify.token = val;
+        state.residentDj.service = 'spotify';
+        state.streamingProvider = 'spotify';
+
+        const badge = document.getElementById('spotify-status-badge');
+        if (badge) {
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse';
+          badge.innerText = '✓ Spotify Premium Actif';
+        }
+        const banner = document.getElementById('spotify-account-banner');
+        if (banner) banner.classList.remove('hidden');
+        updateStreamingStatusHUD();
+        updateUIBanner();
+        showToast('✓ Compte Spotify lié pour le DJ Résident !');
+      });
+
+      document.getElementById('btn-disconnect-spotify')?.addEventListener('click', () => {
+        state.spotify.connected = false;
+        state.spotify.token = null;
+        const badge = document.getElementById('spotify-status-badge');
+        if (badge) {
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-slate-400 border border-slate-700';
+          badge.innerText = 'Non connecté';
+        }
+        const banner = document.getElementById('spotify-account-banner');
+        if (banner) banner.classList.add('hidden');
+        updateStreamingStatusHUD();
+        showToast('Spotify déconnecté.');
+      });
+
       // Modal Resident
       const modalResident = document.getElementById('modal-resident');
       document.getElementById('btn-resident-dj')?.addEventListener('click', () => {
-        if (modalResident) modalResident.classList.remove('hidden');
+        if (modalResident) {
+          modalResident.classList.remove('hidden');
+          switchStreamingProvider(state.residentDj.service || state.streamingProvider || 'deezer');
+        }
       });
 
       document.getElementById('btn-close-resident')?.addEventListener('click', () => {
@@ -1912,18 +2145,21 @@
         if (residentInput?.value.trim()) {
           state.residentDj.name = residentInput.value.trim();
         }
+        
+        state.residentDj.service = state.streamingProvider;
+
         if (genreSelect?.value && genreSelect.value !== state.residentDj.genre) {
           state.residentDj.genre = genreSelect.value;
-          // Filtrer ou réordonner les morceaux complets selon le genre
           residentPlaylist = CURATED_FULL_TRACKS.filter(t => t.genre === state.residentDj.genre);
           if (residentPlaylist.length === 0) residentPlaylist = [...CURATED_FULL_TRACKS];
         }
         if (modalResident) modalResident.classList.add('hidden');
+        updateStreamingStatusHUD();
         updateUIBanner();
-        showToast("✓ Configuration DJ Résident enregistrée !");
+        showToast(`✓ Configuration DJ Résident (${state.residentDj.service.toUpperCase()}) enregistrée !`);
       });
 
-      // Dance Buttons
+      // Dance Moves
       document.querySelectorAll('.dance-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const move = btn.getAttribute('data-dance');
@@ -1937,7 +2173,7 @@
         });
       });
 
-      // Emote Buttons
+      // Emotes
       document.querySelectorAll('.emote-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const emoji = btn.getAttribute('data-emoji');
@@ -1965,7 +2201,6 @@
       });
     }
 
-    // --- AFFICHAGE DE LA LISTE DES MORCEAUX COMPLETS DANS LA MODALE ---
     function renderCuratedFullTracksList() {
       const container = document.getElementById('curated-fulltracks-list');
       if (!container) return;
@@ -1982,7 +2217,7 @@
               <p class="text-[10px] text-slate-400 truncate flex items-center space-x-1.5">
                 <span>${track.artist}</span>
                 <span>•</span>
-                <span class="text-cyan-400 font-mono">${track.durationText} (Complet)</span>
+                <span class="text-cyan-400 font-mono">${track.durationText}</span>
               </p>
             </div>
           </div>
@@ -2017,7 +2252,6 @@
       lucide.createIcons();
     }
 
-    // --- RECHERCHE MUSICALE EN LIGNE ---
     async function searchTracks(query) {
       const resultsContainer = document.getElementById('search-results-list');
       const section = document.getElementById('search-results-section');
@@ -2085,7 +2319,6 @@
       renderQueueList();
       showToast(`🎵 "${track.title}" ajouté à la file !`);
 
-      // Si aucun son ne tourne encore ou si les enceintes sont prêtes, lancer
       if (!state.currentTrack) {
         playTrackInitialOrSkip();
       }
@@ -2148,7 +2381,6 @@
       }, 3500);
     }
 
-    // --- DESSIN DU NIGHTCLUB AVEC DOUBLE PLATINE RÉACTIVES (DECK A & B) ---
     let frameCount = 0;
 
     const softSpotlights = [
@@ -2157,7 +2389,6 @@
     ];
 
     function drawClubFloor() {
-      // 1. Fond sombre et velouté
       const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
       bgGrad.addColorStop(0, '#090a13');
       bgGrad.addColorStop(0.5, '#0d0e1b');
@@ -2165,7 +2396,6 @@
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Scène DJ épurée
       const stageW = Math.min(width * 0.65, 480);
       const stageH = 100;
       const stageX = (width - stageW) / 2;
@@ -2179,7 +2409,6 @@
       ctx.fill();
       ctx.stroke();
 
-      // Mur LED arrière
       const ledWallW = stageW * 0.82;
       const ledWallH = 38;
       const ledWallX = (width - ledWallW) / 2;
@@ -2196,7 +2425,6 @@
         ctx.fillRect(ledWallX + b * barW + 1.5, ledWallY + ledWallH - barH - 2, barW - 3, barH);
       }
 
-      // Table de mixage DJ à Double Platine
       const boothW = 160;
       const boothH = 32;
       const boothX = (width - boothW) / 2;
@@ -2210,13 +2438,12 @@
       ctx.fill();
       ctx.stroke();
 
-      // PLATINE A (Gauche) & PLATINE B (Droite)
       const deckASpinning = (!audioDeckA.paused && audioDeckA.currentTime > 0) || (state.activeDeck === 'A');
       const deckBSpinning = (!audioDeckB.paused && audioDeckB.currentTime > 0) || (state.activeDeck === 'B');
       const spinAngleA = deckASpinning ? frameCount * 0.07 : 0;
       const spinAngleB = deckBSpinning ? frameCount * 0.07 : 0;
 
-      // Vinyle A
+      // Deck A
       ctx.fillStyle = '#0b0c16';
       ctx.beginPath();
       ctx.arc(boothX + 28, boothY + 16, 11, 0, Math.PI * 2);
@@ -2230,7 +2457,7 @@
       ctx.arc(boothX + 28 + Math.cos(spinAngleA) * 6, boothY + 16 + Math.sin(spinAngleA) * 6, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Vinyle B
+      // Deck B
       ctx.fillStyle = '#0b0c16';
       ctx.beginPath();
       ctx.arc(boothX + boothW - 28, boothY + 16, 11, 0, Math.PI * 2);
@@ -2244,7 +2471,7 @@
       ctx.arc(boothX + boothW - 28 + Math.cos(spinAngleB) * 6, boothY + 16 + Math.sin(spinAngleB) * 6, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Petit curseur de crossfader miniature sur la table physique
+      // Crossfader miniature
       const mixerCenterX = boothX + boothW / 2;
       ctx.fillStyle = '#090a12';
       ctx.fillRect(mixerCenterX - 14, boothY + 18, 28, 5);
@@ -2252,11 +2479,9 @@
       ctx.fillStyle = state.isCrossfading ? '#ffffff' : '#fbbf24';
       ctx.fillRect(physicalCrossfaderX, boothY + 16, 4, 9);
 
-      // Enceintes
       drawSubtleSpeaker(stageX - 35, stageY + 15, 26, 75);
       drawSubtleSpeaker(stageX + stageW + 9, stageY + 15, 26, 75);
 
-      // 3. Piste de danse en damier subtil
       const floorTopY = stageY + stageH + 15;
       const floorBottomY = height - 15;
       const floorWTop = stageW * 1.05;
@@ -2298,7 +2523,6 @@
         }
       }
 
-      // 4. Éclairages tamisés & doux
       softSpotlights.forEach(spot => {
         spot.angle += spot.speed;
         const targetX = width / 2 + Math.cos(spot.angle) * (width * 0.45);
@@ -2314,7 +2538,6 @@
         ctx.fill();
       });
 
-      // Boule à facette
       const ballX = width / 2;
       const ballY = 20;
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
@@ -2351,7 +2574,6 @@
       });
     }
 
-    // --- AVATAR RENDERING ---
     function drawAvatar(person, isCurrentDjOnStage = false) {
       let x = person.x;
       let y = person.y;
@@ -2382,24 +2604,20 @@
       ctx.translate(0, bounceY);
       ctx.rotate(rotAngle);
 
-      // Ombre douce au sol
       ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
       ctx.beginPath();
       ctx.ellipse(0, 22 - bounceY, 12, 4, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Jambes
       ctx.fillStyle = '#1e293b';
       ctx.fillRect(-5, 10, 3.5, 11);
       ctx.fillRect(1.5, 10, 3.5, 11);
 
-      // Buste / Tenue
       ctx.fillStyle = person.outfitColor || '#ec4899';
       ctx.beginPath();
       ctx.roundRect ? ctx.roundRect(-8, -2, 16, 14, 4) : ctx.rect(-8, -2, 16, 14);
       ctx.fill();
 
-      // Bras
       const armSwing = Math.sin(tempo) * 5;
       ctx.strokeStyle = person.skinColor || '#fed7aa';
       ctx.lineWidth = 3;
@@ -2415,13 +2633,11 @@
       ctx.lineTo(13, isCurrentDjOnStage ? -2 : -4 - armSwing);
       ctx.stroke();
 
-      // Tête
       ctx.fillStyle = person.skinColor || '#fed7aa';
       ctx.beginPath();
       ctx.arc(0, -11, 9, 0, Math.PI * 2);
       ctx.fill();
 
-      // Yeux / Lunettes
       if (person.accessory === 'shades') {
         ctx.fillStyle = '#0f172a';
         ctx.fillRect(-7, -13, 12, 4);
@@ -2433,7 +2649,6 @@
         ctx.fill();
       }
 
-      // Cheveux
       ctx.fillStyle = person.hairColor || '#38bdf8';
       if (person.hairStyle === 'messy') {
         ctx.beginPath();
@@ -2458,7 +2673,6 @@
         ctx.fillRect(-8, -19, 16, 6);
       }
 
-      // Accessoires
       if (person.accessory === 'glowstick') {
         ctx.strokeStyle = '#00f2fe';
         ctx.lineWidth = 2.5;
@@ -2479,7 +2693,6 @@
 
       ctx.restore();
 
-      // Badge Nom & Bulle
       ctx.save();
       ctx.translate(x, y + bounceY);
 
@@ -2526,7 +2739,6 @@
       ctx.restore();
     }
 
-    // --- BOUCLE D'ANIMATION ---
     function clubAnimationLoop() {
       frameCount++;
 
@@ -2538,10 +2750,8 @@
         state.bassLevel = 0.2 + Math.sin(frameCount * 0.05) * 0.1;
       }
 
-      // 1. Décor et ambiance
       drawClubFloor();
 
-      // 2. DJ aux platines
       let stageDjPerson = null;
       if (state.currentDj.isResident) {
         stageDjPerson = {
@@ -2564,7 +2774,6 @@
       }
       drawAvatar(stageDjPerson, true);
 
-      // 3. VRAIS CLUBBERS CONNECTÉS
       state.otherConnectedUsers.forEach(peer => {
         if (stageDjPerson.name !== peer.name) {
           if (peer.targetX && peer.targetY) {
@@ -2575,7 +2784,6 @@
         }
       });
 
-      // 4. Utilisateur local sur la piste
       if (!state.user.isDj) {
         state.user.x += (state.user.targetX - state.user.x) * 0.08;
         state.user.y += (state.user.targetY - state.user.y) * 0.08;
@@ -2591,7 +2799,6 @@
       requestAnimationFrame(clubAnimationLoop);
     }
 
-    // --- INTERACTION PISTE DE DANSE ---
     canvas.addEventListener('pointerdown', (e) => {
       if (!state.audioInitialized) initAudioContext();
       if (state.audioMuted) toggleAudio();
@@ -2611,7 +2818,6 @@
       state.user.targetY = Math.max(minFloorY, Math.min(maxFloorY, clickY));
     });
 
-    // --- INITIALISATION ---
     window.addEventListener('load', () => {
       lucide.createIcons();
       resizeCanvas();

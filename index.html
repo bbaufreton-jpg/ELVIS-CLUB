@@ -50,7 +50,7 @@
 </head>
 <body class="h-full w-full overflow-hidden flex flex-col font-sans bg-club-dark">
 
-  <!-- ================= CLUB HUD NAVIGATION ================= -->
+  <!-- ================= TOP HUD NAVIGATION ================= -->
   <header class="h-16 px-3 sm:px-4 py-2 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md flex items-center justify-between z-30 shrink-0">
     <div class="flex items-center space-x-2.5 sm:space-x-3">
       <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-club-neonPink via-purple-600 to-club-neonCyan flex items-center justify-center shadow-lg shadow-pink-500/20 shrink-0">
@@ -76,24 +76,26 @@
       </div>
     </div>
 
-    <!-- Live Track Banner (Desktop) -->
-    <div class="hidden lg:flex items-center space-x-3 bg-slate-900/90 border border-slate-800 rounded-full px-4 py-1.5 max-w-md w-full shadow-inner">
+    <!-- Live Track Banner Header (Visible sur tous les écrans) -->
+    <div class="hidden md:flex items-center space-x-3 bg-slate-900/90 border border-purple-500/30 rounded-full px-4 py-1.5 max-w-md w-full shadow-inner">
       <div class="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-slate-800 border border-purple-500/40">
         <img id="current-track-art" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&h=100&fit=crop" class="w-full h-full object-cover animate-spin-slow" alt="Cover">
       </div>
       <div class="flex-1 min-w-0">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-white truncate" id="current-track-title">Sélection Deezer du Résident</span>
-          <span class="text-[10px] font-mono text-purple-400 font-semibold ml-1 shrink-0" id="track-time-display">LIVE ENCEINTE</span>
+          <span class="text-[9px] font-mono text-purple-400 font-semibold ml-1 shrink-0 flex items-center">
+            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 mr-1 animate-ping"></span> EN COURS
+          </span>
         </div>
         <div class="text-[11px] text-slate-400 truncate flex items-center space-x-1">
           <span id="current-track-artist">Deezer Mix</span>
           <span>•</span>
-          <span class="text-pink-400 font-semibold" id="current-dj-name">DJ Résident</span>
+          <span class="text-purple-300 font-semibold" id="current-dj-name">DJ Résident</span>
         </div>
       </div>
 
-      <a id="btn-quick-deezer-app" href="https://www.deezer.com" target="_blank" title="Ouvrir sur Deezer" class="px-2.5 py-1 rounded-lg bg-purple-600/30 hover:bg-purple-600 text-purple-300 hover:text-white border border-purple-500/40 text-[11px] font-bold transition flex items-center space-x-1 shrink-0">
+      <a id="btn-quick-deezer-app" href="https://www.deezer.com" target="_blank" title="Ouvrir sur Deezer" class="btn-link-deezer-track px-2.5 py-1 rounded-lg bg-purple-600/30 hover:bg-purple-600 text-purple-300 hover:text-white border border-purple-500/40 text-[11px] font-bold transition flex items-center space-x-1 shrink-0">
         <i data-lucide="external-link" class="w-3 h-3"></i>
         <span>Deezer</span>
       </a>
@@ -129,7 +131,7 @@
     </div>
   </header>
 
-  <!-- ================= REGIE BAR ================= -->
+  <!-- ================= REGIE HOST BAR ================= -->
   <div id="speaker-host-bar" class="hidden bg-gradient-to-r from-purple-950/90 via-slate-900/95 to-slate-950 border-b border-purple-500/40 px-4 py-2 z-20 flex flex-wrap items-center justify-between gap-2 shadow-lg">
     <div class="flex items-center space-x-3">
       <span class="relative flex h-3 w-3">
@@ -148,11 +150,11 @@
     </div>
 
     <div class="flex items-center space-x-2 text-xs">
-      <button id="btn-next-track-host" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold flex items-center space-x-1.5 shadow transition">
+      <button onclick="window.skipToNextTrack()" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold flex items-center space-x-1.5 shadow transition">
         <i data-lucide="skip-forward" class="w-3.5 h-3.5"></i>
         <span>Son Suivant</span>
       </button>
-      <a id="btn-host-open-deezer-tab" href="https://www.deezer.com" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold flex items-center space-x-1.5 border border-slate-700 transition">
+      <a href="https://www.deezer.com" target="_blank" class="btn-link-deezer-track px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold flex items-center space-x-1.5 border border-slate-700 transition">
         <i data-lucide="external-link" class="w-3.5 h-3.5 text-purple-400"></i>
         <span>Ouvrir Deezer</span>
       </a>
@@ -163,6 +165,95 @@
   <main class="relative flex-1 w-full h-full overflow-hidden bg-black flex items-center justify-center">
     
     <canvas id="club-canvas" class="w-full h-full block cursor-pointer select-none"></canvas>
+
+    <!-- ================= NOUVEAU : LECTEUR DU SITE FLOTTANT DIRECTEMENT SUR LA PISTE ================= -->
+    <div id="live-club-player" class="absolute bottom-16 sm:bottom-6 left-3 sm:left-6 z-20 max-w-sm w-[calc(100vw-24px)] sm:w-80 bg-slate-950/90 backdrop-blur-md border border-purple-500/40 rounded-2xl p-3 shadow-2xl space-y-2 transition-all">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-1.5">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+          </span>
+          <span class="text-[10px] font-bold tracking-wider text-purple-300 uppercase">EN COURS SUR L'ENCEINTE</span>
+        </div>
+        <button onclick="window.skipToNextTrack()" title="Passer au morceau suivant" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-purple-600 text-slate-300 hover:text-white transition flex items-center space-x-1">
+          <span>Suivant</span>
+          <i data-lucide="skip-forward" class="w-2.5 h-2.5"></i>
+        </button>
+      </div>
+
+      <!-- Informations Morceau & Qui l'a mis -->
+      <div class="flex items-center space-x-2.5 bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+        <img id="main-player-art" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&h=100&fit=crop" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-purple-500/30">
+        <div class="flex-1 min-w-0 text-xs">
+          <p id="main-player-title" class="font-bold text-white truncate">D.A.N.C.E. (Club Selection)</p>
+          <p id="main-player-artist" class="text-[11px] text-slate-400 truncate">Justice</p>
+          <p class="text-[9px] text-purple-400 font-semibold truncate flex items-center space-x-1">
+            <span>Mis par :</span>
+            <span id="main-player-dj" class="text-white font-bold">DJ Résident</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Widget Iframe Deezer Officiel intégré pour l'écoute directe -->
+      <div class="rounded-xl overflow-hidden border border-purple-500/20 bg-slate-950">
+        <iframe id="main-deezer-player-frame" title="Deezer Player" src="https://widget.deezer.com/widget/dark/track/3135556" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write"></iframe>
+      </div>
+    </div>
+
+    <!-- DJ Booth Announcement Floating Banner -->
+    <div id="dj-banner" class="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-950/90 border border-purple-500/50 backdrop-blur-md px-4 sm:px-5 py-2 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none transition-all duration-300 z-10 max-w-md w-[92vw] sm:w-auto">
+      <div class="relative shrink-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-purple-500 flex items-center justify-center overflow-hidden bg-slate-900" id="current-dj-avatar-container"></div>
+        <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-black flex items-center justify-center text-[7px] font-bold">✓</span>
+      </div>
+      <div class="truncate text-left">
+        <div class="text-[9px] uppercase font-bold tracking-wider text-purple-400 flex items-center space-x-1">
+          <i data-lucide="headphones" class="w-3 h-3"></i>
+          <span id="dj-role-badge">AUX PLATINES EN DIRECT</span>
+        </div>
+        <div class="font-display font-black text-xs sm:text-sm text-white tracking-wide truncate" id="banner-dj-name">
+          DJ Résident
+        </div>
+        <div class="text-[10px] text-slate-300 truncate" id="banner-track-name">
+          🎵 D.A.N.C.E. • Justice
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay Interaction Hint -->
+    <div id="click-hint" class="absolute bottom-24 sm:bottom-20 left-1/2 -translate-x-1/2 pointer-events-none px-4 py-2 rounded-full bg-slate-950/80 border border-slate-800 backdrop-blur-md text-xs text-slate-300 flex items-center space-x-2 shadow-xl transition-opacity duration-500">
+      <i data-lucide="mouse-pointer" class="w-4 h-4 text-cyan-400 animate-pulse"></i>
+      <span>Clique sur la piste pour faire danser ton avatar !</span>
+    </div>
+
+    <!-- Quick Reaction / Emote Floating Bar (Centrée en bas) -->
+    <div class="absolute bottom-3 right-3 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 flex items-center space-x-1.5 sm:space-x-2 bg-slate-950/85 backdrop-blur-md border border-slate-800/80 px-2 sm:px-3 py-1.5 sm:py-2 rounded-2xl shadow-2xl z-20">
+      <div class="flex items-center space-x-1 pr-1.5 border-r border-slate-800">
+        <button data-dance="bounce" class="dance-btn px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-600 text-white shadow">
+          Bounce
+        </button>
+        <button data-dance="spin" class="dance-btn px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">
+          Spin
+        </button>
+        <button data-dance="wave" class="dance-btn px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">
+          Vogue
+        </button>
+      </div>
+
+      <div class="flex items-center space-x-0.5 sm:space-x-1">
+        <button class="emote-btn p-1 sm:p-1.5 hover:scale-125 transition text-sm sm:text-base" data-emoji="🔥">🔥</button>
+        <button class="emote-btn p-1 sm:p-1.5 hover:scale-125 transition text-sm sm:text-base" data-emoji="💃">💃</button>
+        <button class="emote-btn p-1 sm:p-1.5 hover:scale-125 transition text-sm sm:text-base" data-emoji="✨">✨</button>
+      </div>
+
+      <div class="hidden md:flex items-center pl-2 border-l border-slate-800">
+        <input type="text" id="quick-chat-input" placeholder="Dire un mot..." maxlength="35" class="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg px-2 py-1 w-20 focus:w-36 focus:outline-none focus:border-purple-500 transition-all">
+        <button id="btn-send-chat" class="ml-1 p-1 rounded-lg bg-purple-600 text-white hover:bg-purple-500">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </div>
 
     <!-- FENÊTRE D'ENTRÉE : 100% SCROLLABLE SANS COUPURE -->
     <div id="entrance-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md overflow-y-auto p-3 sm:p-6 flex justify-center items-start">
@@ -177,7 +268,6 @@
           <p class="text-xs text-slate-400">Connecté à l'enceinte Deezer du bureau • Crée ton personnage et rejoins la piste</p>
         </div>
 
-        <!-- Quick Resume Box -->
         <div id="quick-resume-box" class="hidden p-3 rounded-2xl bg-gradient-to-r from-purple-950/40 via-pink-950/30 to-slate-900 border border-purple-500/40 flex items-center justify-between">
           <div class="flex items-center space-x-3 min-w-0 pr-2">
             <div id="quick-resume-avatar-badge" class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm border-2 border-purple-400 shadow shrink-0">
@@ -195,7 +285,6 @@
           </button>
         </div>
 
-        <!-- Navigation Tabs -->
         <div class="grid grid-cols-2 gap-2 text-xs font-bold">
           <button id="tab-choose-profile" type="button" onclick="window.switchEntranceTab('choose')" class="py-2.5 rounded-xl bg-purple-600 text-white border border-purple-500 shadow cursor-pointer transition">
             👥 Comptes Enregistrés
@@ -205,7 +294,6 @@
           </button>
         </div>
 
-        <!-- PANEL 1: Comptes enregistrés -->
         <div id="panel-choose-profile" class="space-y-2">
           <div class="flex items-center justify-between text-[11px] text-slate-400 px-1">
             <span>Clique sur ton profil pour entrer :</span>
@@ -214,7 +302,6 @@
           <div id="existing-profiles-list" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
         </div>
 
-        <!-- PANEL 2: Formulaire Nouveau Profil Complet -->
         <div id="panel-create-profile" class="hidden space-y-3">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div>
@@ -227,7 +314,6 @@
             </div>
           </div>
 
-          <!-- Personnalisation d'Avatar Complète -->
           <div class="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800 space-y-3 text-xs">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold text-purple-300 uppercase tracking-wider flex items-center">
@@ -284,59 +370,6 @@
         </div>
       </div>
     </div>
-
-    <!-- DJ Booth Announcement Floating Banner -->
-    <div id="dj-banner" class="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-950/90 border border-purple-500/50 backdrop-blur-md px-4 sm:px-5 py-2 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none transition-all duration-300 z-10">
-      <div class="relative">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-purple-500 flex items-center justify-center overflow-hidden bg-slate-900" id="current-dj-avatar-container"></div>
-        <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-black flex items-center justify-center text-[7px] font-bold">✓</span>
-      </div>
-      <div>
-        <div class="text-[10px] uppercase font-bold tracking-wider text-purple-400 flex items-center space-x-1">
-          <i data-lucide="headphones" class="w-3 h-3"></i>
-          <span id="dj-role-badge">AUX PLATINES EN DIRECT</span>
-        </div>
-        <div class="font-display font-black text-xs sm:text-sm text-white tracking-wide flex items-center space-x-1.5">
-          <span id="banner-dj-name">DJ Résident (Deezer)</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Overlay Interaction Hint -->
-    <div id="click-hint" class="absolute bottom-20 left-1/2 -translate-x-1/2 pointer-events-none px-4 py-2 rounded-full bg-slate-950/80 border border-slate-800 backdrop-blur-md text-xs text-slate-300 flex items-center space-x-2 shadow-xl transition-opacity duration-500">
-      <i data-lucide="mouse-pointer" class="w-4 h-4 text-cyan-400 animate-pulse"></i>
-      <span>Clique sur la piste pour faire danser ou déplacer ton avatar !</span>
-    </div>
-
-    <!-- Quick Reaction / Emote Floating Bar -->
-    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center space-x-2 bg-slate-950/85 backdrop-blur-md border border-slate-800/80 px-3 py-2 rounded-2xl shadow-2xl z-20">
-      <div class="flex items-center space-x-1 pr-2 border-r border-slate-800">
-        <button data-dance="bounce" class="dance-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-600 text-white shadow">
-          Bounce
-        </button>
-        <button data-dance="spin" class="dance-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">
-          Spin
-        </button>
-        <button data-dance="wave" class="dance-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">
-          Vogue
-        </button>
-      </div>
-
-      <div class="flex items-center space-x-1">
-        <button class="emote-btn p-1.5 hover:scale-125 transition text-base" data-emoji="🔥">🔥</button>
-        <button class="emote-btn p-1.5 hover:scale-125 transition text-base" data-emoji="💃">💃</button>
-        <button class="emote-btn p-1.5 hover:scale-125 transition text-base" data-emoji="🍸">🍸</button>
-        <button class="emote-btn p-1.5 hover:scale-125 transition text-base" data-emoji="✨">✨</button>
-        <button class="emote-btn p-1.5 hover:scale-125 transition text-base" data-emoji="🔊">🔊</button>
-      </div>
-
-      <div class="hidden sm:flex items-center pl-2 border-l border-slate-800">
-        <input type="text" id="quick-chat-input" placeholder="Dire un mot..." maxlength="35" class="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg px-2 py-1 w-24 focus:w-40 focus:outline-none focus:border-purple-500 transition-all">
-        <button id="btn-send-chat" class="ml-1 p-1 rounded-lg bg-purple-600 text-white hover:bg-purple-500">
-          <i data-lucide="send" class="w-3.5 h-3.5"></i>
-        </button>
-      </div>
-    </div>
   </main>
 
   <!-- ================= MODAL: FILE D'ATTENTE & RECHERCHE DEEZER ================= -->
@@ -387,18 +420,6 @@
           <p class="text-sm font-semibold text-slate-300">La file d'attente est vide !</p>
           <p class="text-xs text-slate-500 mt-1">C'est le <strong class="text-amber-400">DJ Résident</strong> qui diffuse sa sélection Deezer sur l'enceinte. Recherche un morceau ci-dessus pour monter aux platines !</p>
         </div>
-      </div>
-
-      <div id="deezer-widget-container" class="mt-3 pt-3 border-t border-slate-800 shrink-0">
-        <div class="flex items-center justify-between mb-1.5">
-          <span class="text-[11px] font-bold text-purple-300 flex items-center">
-            <i data-lucide="radio" class="w-3 h-3 mr-1 text-purple-400"></i> Lecteur Deezer Intégré (Régie)
-          </span>
-          <a id="btn-modal-deezer-direct" href="https://www.deezer.com" target="_blank" class="text-[10px] text-cyan-400 hover:underline">
-            Ouvrir dans Deezer &rarr;
-          </a>
-        </div>
-        <iframe id="deezer-player-frame" title="Deezer Player" src="https://widget.deezer.com/widget/dark/track/3135556" width="100%" height="92" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write" class="rounded-xl bg-slate-950"></iframe>
       </div>
     </div>
   </div>
@@ -457,7 +478,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: MON COMPTE (PERSONNALISATION COMPLÈTE) ================= -->
+  <!-- ================= MODAL: MON COMPTE ================= -->
   <div id="modal-account" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[94vh] flex flex-col overflow-hidden">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
@@ -871,7 +892,6 @@
       renderAllAvatarPreviews();
     }
 
-    // ================= BASCULE D'ONGLETS =================
     window.switchEntranceTab = function(tab) {
       const tabChoose = document.getElementById('tab-choose-profile');
       const tabCreate = document.getElementById('tab-create-profile');
@@ -894,7 +914,7 @@
       }
     };
 
-    // ================= RECHERCHE DEEZER DIRECTE =================
+    // ================= RECHERCHE DEEZER =================
     function searchDeezer(query) {
       return new Promise((resolve) => {
         const callbackName = 'deezerCb_' + Math.floor(Math.random() * 1000000);
@@ -959,7 +979,7 @@
           </div>
           <button class="btn-add-dz px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-[11px] shrink-0 flex items-center space-x-1 shadow transition">
             <i data-lucide="plus" class="w-3 h-3"></i>
-            <span>Envoyer</span>
+            <span>Lancer</span>
           </button>
         `;
 
@@ -984,6 +1004,8 @@
           });
           box.classList.add('hidden');
           input.value = '';
+          const modalQueue = document.getElementById('modal-queue');
+          if (modalQueue) modalQueue.classList.add('hidden');
         });
 
         list.appendChild(item);
@@ -991,15 +1013,33 @@
       lucide.createIcons();
     }
 
+    // ================= MISE À JOUR SYNCHRONISÉE DU MORCEAU EN COURS =================
     async function addTrackToSharedQueue(track) {
-      state.queue.push(track);
+      // Si la file est vide ou si c'est encore le son d'attente par défaut, on le passe immédiatement en direct !
+      const shouldPlayNow = state.currentDj.isResident && state.queue.length === 0;
+
+      if (shouldPlayNow) {
+        state.currentTrack = track;
+        state.currentDj = {
+          name: track.addedBy.name,
+          isResident: false,
+          avatarConfig: track.addedBy
+        };
+        state.user.isDj = (track.addedBy.id === state.user.id);
+      } else {
+        state.queue.push(track);
+      }
+
       renderQueueList();
-      showToast(`🎵 "${track.title}" envoyé dans la file du club !`);
+      updateUIBanner();
+      showToast(`🎵 "${track.title}" est maintenant diffusé dans le club !`);
 
       if (db) {
         try {
           const playbackRef = doc(db, 'club_state', 'playback');
           await setDoc(playbackRef, {
+            currentTrack: state.currentTrack,
+            currentDj: state.currentDj,
             queue: state.queue,
             updatedAt: Date.now()
           }, { merge: true });
@@ -1007,13 +1047,9 @@
           console.warn("Queue sync error:", e);
         }
       }
-
-      if (state.isSpeakerHost && state.queue.length === 1 && state.currentDj.isResident) {
-        playNextTrackInQueue();
-      }
     }
 
-    function playNextTrackInQueue() {
+    window.skipToNextTrack = function() {
       if (state.queue.length > 0) {
         const next = state.queue.shift();
         state.currentTrack = next;
@@ -1025,11 +1061,11 @@
         state.user.isDj = (next.addedBy.id === state.user.id);
       } else {
         state.currentTrack = {
-          title: "Sélection Club du Résident",
-          artist: "Deezer Playlist",
+          title: "D.A.N.C.E. (Club Selection)",
+          artist: "Justice",
           artwork: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&h=100&fit=crop",
           deezerId: "3135556",
-          deezerUrl: "https://www.deezer.com"
+          deezerUrl: "https://www.deezer.com/track/3135556"
         };
         state.currentDj = {
           name: state.residentDj.name,
@@ -1041,11 +1077,7 @@
 
       updateUIBanner();
       renderQueueList();
-
-      if (state.isSpeakerHost && state.currentTrack?.deezerId) {
-        const frame = document.getElementById('deezer-player-frame');
-        if (frame) frame.src = `https://widget.deezer.com/widget/dark/track/${state.currentTrack.deezerId}?autoplay=true`;
-      }
+      showToast(`⏭️ Enchaînement sur "${state.currentTrack.title}"`);
 
       if (db) {
         try {
@@ -1058,7 +1090,7 @@
           }, { merge: true });
         } catch(e) {}
       }
-    }
+    };
 
     function renderQueueList() {
       const container = document.getElementById('queue-items-container');
@@ -1102,25 +1134,61 @@
       });
     }
 
+    // ================= MISE À JOUR VISUELLE DU LECTEUR PARTOUT =================
     function updateUIBanner() {
       if (!state.currentTrack) return;
-      document.getElementById('current-track-title').innerText = state.currentTrack.title;
-      document.getElementById('current-track-artist').innerText = state.currentTrack.artist;
-      document.getElementById('current-track-art').src = state.currentTrack.artwork;
-      document.getElementById('current-dj-name').innerText = state.currentDj.name;
-      document.getElementById('banner-dj-name').innerText = state.currentDj.name;
 
-      const appBtn = document.getElementById('btn-quick-deezer-app');
-      if (appBtn) {
-        appBtn.href = state.currentTrack.deezerUrl || `https://www.deezer.com/track/${state.currentTrack.deezerId || ''}`;
+      // 1. Header supérieur
+      const tTitle = document.getElementById('current-track-title');
+      const tArtist = document.getElementById('current-track-artist');
+      const tArt = document.getElementById('current-track-art');
+      const tDj = document.getElementById('current-dj-name');
+
+      if (tTitle) tTitle.innerText = state.currentTrack.title;
+      if (tArtist) tArtist.innerText = state.currentTrack.artist;
+      if (tArt) tArt.src = state.currentTrack.artwork;
+      if (tDj) tDj.innerText = state.currentDj.name;
+
+      // 2. Lecteur flottant principal sur l'écran
+      const mainTitle = document.getElementById('main-player-title');
+      const mainArtist = document.getElementById('main-player-artist');
+      const mainArt = document.getElementById('main-player-art');
+      const mainDj = document.getElementById('main-player-dj');
+
+      if (mainTitle) mainTitle.innerText = state.currentTrack.title;
+      if (mainArtist) mainArtist.innerText = state.currentTrack.artist;
+      if (mainArt) mainArt.src = state.currentTrack.artwork;
+      if (mainDj) mainDj.innerText = state.currentDj.name;
+
+      // 3. Bannière centrale au-dessus de la scène
+      const bannerDj = document.getElementById('banner-dj-name');
+      const bannerTrack = document.getElementById('banner-track-name');
+      if (bannerDj) bannerDj.innerText = state.currentDj.name;
+      if (bannerTrack) bannerTrack.innerText = `🎵 ${state.currentTrack.title} • ${state.currentTrack.artist}`;
+
+      // 4. Iframe Deezer officielle synchronisée
+      if (state.currentTrack.deezerId) {
+        const deezerFrame = document.getElementById('main-deezer-player-frame');
+        const targetSrc = `https://widget.deezer.com/widget/dark/track/${state.currentTrack.deezerId}`;
+        if (deezerFrame && !deezerFrame.src.includes(state.currentTrack.deezerId)) {
+          deezerFrame.src = targetSrc;
+        }
       }
+
+      // 5. Liens Deezer
+      document.querySelectorAll('.btn-link-deezer-track').forEach(btn => {
+        btn.href = state.currentTrack.deezerUrl || `https://www.deezer.com/track/${state.currentTrack.deezerId || ''}`;
+      });
 
       const roleBadge = document.getElementById('dj-role-badge');
-      if (state.currentDj.isResident) {
-        roleBadge.innerHTML = `<i data-lucide="crown" class="w-3 h-3 text-amber-400 mr-1"></i> DJ RÉSIDENT (DEEZER)`;
-      } else {
-        roleBadge.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3 text-purple-400 mr-1"></i> GUEST DJ AUX PLATINES`;
+      if (roleBadge) {
+        if (state.currentDj.isResident) {
+          roleBadge.innerHTML = `<i data-lucide="crown" class="w-3 h-3 text-amber-400 mr-1"></i> DJ RÉSIDENT (DEEZER)`;
+        } else {
+          roleBadge.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3 text-purple-400 mr-1"></i> GUEST DJ AUX PLATINES`;
+        }
       }
+
       lucide.createIcons();
       renderDjMiniAvatar();
     }
@@ -1172,11 +1240,6 @@
           modalBadge.innerText = "PC Enceinte Actif";
         }
         if (modalBtnLabel) modalBtnLabel.innerText = "Désactiver le rôle Enceinte sur ce PC";
-        
-        if (state.currentTrack?.deezerId) {
-          const frame = document.getElementById('deezer-player-frame');
-          if (frame) frame.src = `https://widget.deezer.com/widget/dark/track/${state.currentTrack.deezerId}?autoplay=true`;
-        }
       } else {
         if (hostBar) hostBar.classList.add('hidden');
         if (pill) {
@@ -1469,8 +1532,7 @@
       });
 
       document.getElementById('btn-next-track-host')?.addEventListener('click', () => {
-        playNextTrackInQueue();
-        showToast("⏭️ Passage au morceau suivant...");
+        window.skipToNextTrack();
       });
 
       const modalAccount = document.getElementById('modal-account');
@@ -1574,9 +1636,9 @@
           if (move) {
             state.user.dance = move;
             document.querySelectorAll('.dance-btn').forEach(b => {
-              b.className = 'dance-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700';
+              b.className = 'dance-btn px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700';
             });
-            btn.className = 'dance-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-600 text-white shadow';
+            btn.className = 'dance-btn px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-600 text-white shadow';
           }
         });
       });
